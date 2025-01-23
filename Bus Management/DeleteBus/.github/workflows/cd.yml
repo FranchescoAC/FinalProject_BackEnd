@@ -1,0 +1,14 @@
+name: Registry image
+
+on:
+  push:
+    branches: ["dev"]
+
+jobs:
+  login-and-pull-dev:
+    if: github.ref == 'refs/heads/dev'
+    uses: ./.github/workflows/login_pull.yml
+    secrets:
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_DEV }}
