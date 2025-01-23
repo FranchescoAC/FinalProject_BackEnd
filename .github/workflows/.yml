@@ -1,0 +1,22 @@
+name: Registry image
+
+on:
+  push:
+    branches: ["QA"]
+
+jobs:
+  login-and-pull-QA-delete:
+    if: github.ref == 'refs/heads/QA'
+    uses: ./BusManagement/DeleteBus/.github/workflows/cd.yml
+    secrets:
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_DELETE }}
+
+  login-and-pull-QA-register:
+    if: github.ref == 'refs/heads/QA'
+    uses: ./BusManagement/RegisterBus/.github/workflows/cd.yml
+    secrets:
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_REGISTER }}
