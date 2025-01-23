@@ -7,9 +7,9 @@ on:
 jobs:
   login-and-pull-QA-delete:
     if: github.ref == 'refs/heads/QA'
-    name: My first step - check out repository
+    name: My first step - check out repositoryo
     uses: actions/checkout@v4
-    name: My first step - check out repository
+    name: My first step - check out repositorys
     uses: ./BusManagement/DeleteBus/.github/workflows
     secrets:
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
@@ -18,7 +18,7 @@ jobs:
 
   login-and-pull-QA-register:
     if: github.ref == 'refs/heads/QA'
-    name: My first step - check out repository
+    name: My first step - check out repositorye
     uses: actions/checkout@v4
     name: My first step - check out repository
     uses: ./BusManagement/RegisterBus/.github/workflows
