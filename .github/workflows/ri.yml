@@ -7,7 +7,10 @@ on:
 jobs:
   login-and-pull-QA-delete:
     if: github.ref == 'refs/heads/QA'
-    uses: ./BusManagement/DeleteBus/.github/workflows/cd.yml@QA
+    name: My first step - check out repository
+    uses: actions/checkout@v4
+    name: My first step - check out repository
+    uses: ./BusManagement/DeleteBus/.github/workflows
     secrets:
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
