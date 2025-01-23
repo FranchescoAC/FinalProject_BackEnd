@@ -7,7 +7,7 @@ on:
 jobs:
   login-and-pull-QA-delete:
     if: github.ref == 'refs/heads/QA'
-    uses: ./.github/workflows/cd.yml
+    uses: ./BusManagement/DeleteBus/.github/workflows/cd.yml
     secrets:
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
@@ -15,7 +15,7 @@ jobs:
 
   login-and-pull-QA-register:
     if: github.ref == 'refs/heads/QA'
-    uses: ./.github/workflows/cd.yml
+    uses: ./BusManagement/DeleteBus/.github/workflows/cd.yml
     secrets:
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
