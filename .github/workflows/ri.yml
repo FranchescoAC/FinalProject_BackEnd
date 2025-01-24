@@ -13,7 +13,7 @@ jobs:
     name: Delete Bus Image
     uses: ./.github/workflows/cd.yml
     with:
-      docker_username: ${{ secrets.DOCKERUSERNAME }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_DELETE }}
       dockerfile_path: ./BusManagement/DeleteBus/Dockerfile # Ruta al Dockerfile
@@ -22,7 +22,7 @@ jobs:
     name: Register Bus Image
     uses: ./.github/workflows/cd.yml
     with:
-      docker_username: ${{ secrets.DOCKERUSERNAME }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_REGISTER }}
       dockerfile_path: ./BusManagement/RegisterBus/Dockerfile # Ruta al Dockerfile
