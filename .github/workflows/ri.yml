@@ -11,7 +11,7 @@ permissions:
 jobs:
   login-and-pull-QA-delete:
     name: Delete Bus Image
-    uses: ../BusManagement/DeleteBus/.github/workflows/cd.yml@QA
+    uses: /BusManagement/DeleteBus/.github/workflows/cd.yml@QA
     with:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
@@ -19,7 +19,7 @@ jobs:
 
   login-and-pull-QA-register:
     name: Register Bus Image
-    uses: ../BusManagement/RegisterBus/.github/workflows/cd.yml@QA
+    uses: /BusManagement/RegisterBus/.github/workflows/cd.yml@QA
     with:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
