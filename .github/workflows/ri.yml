@@ -20,7 +20,7 @@ jobs:
       - name: Build and push Docker image for ${{ matrix.service }}
         uses: ./.github/workflows/cd.yml
         with:
-          docker_username: ${{ secrets.DOCKER_USERNAME }} # Se pasan los secretos como inputs
+          docker_username: ${{ secrets.DOCKER_USERNAME }}
           docker_password: ${{ secrets.DOCKER_PASSWORD }}
-          repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_${{ matrix.service }} }}
-          dockerfile_path: ./BusManagement/${{ matrix.service }}/Dockerfile # Ruta al Dockerfile ajustada
+          repository_name: ${{ secrets[format('DOCKER_REPOSITORY_NAME_{0}', matrix.service)] }} # Corrección aquí
+          dockerfile_path: ./BusManagement/${{ matrix.service }}/Dockerfile
