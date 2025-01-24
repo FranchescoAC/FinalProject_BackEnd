@@ -27,5 +27,6 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
+          cd $GITHUB_WORKSPACE # Importante: Cambia al directorio raíz del repositorio
           docker build --build-arg BUILDKIT_INLINE_CACHE=1 -f ${{ inputs.dockerfile_path }} -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:latest .
           docker push ${{ inputs.docker_username }}/${{ inputs.repository_name }}:latest
