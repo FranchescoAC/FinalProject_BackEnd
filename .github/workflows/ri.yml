@@ -10,14 +10,14 @@ permissions:
 
 jobs:
   login-and-pull-QA-delete:
-    uses: BusManagement/DeleteBus/.github/workflows/cd.yml@QA
+    uses: ./BusManagement/DeleteBus/.github/workflows/cd.yml
     with:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_DELETE }}
 
   login-and-pull-QA-register:
-    uses: BusManagement/RegisterBus/.github/workflows/cd.yml@QA
+    uses: ./BusManagement/RegisterBus/.github/workflows/cd.yml
     with:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
