@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for Docker
+name: CI/CD Pipeline for Dockers
 
 on:
   workflow_call:
