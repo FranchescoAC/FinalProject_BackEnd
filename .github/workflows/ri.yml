@@ -14,9 +14,6 @@ jobs:
       matrix:
         service: [DeleteBus, RegisterBus]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Build and push Docker image for ${{ matrix.service }}
         uses: ./.github/workflows/cd.yml
         with:

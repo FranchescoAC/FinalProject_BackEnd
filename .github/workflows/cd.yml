@@ -16,7 +16,7 @@ jobs:
   login-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code  # Crucial step to download your codebase
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Login to Docker Hub
@@ -27,5 +27,5 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -f ${{ inputs.dockerfile_path }} -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:latest .
+          docker build --build-arg BUILDKIT_INLINE_CACHE=1 -f ${{ inputs.dockerfile_path }} -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:latest .
           docker push ${{ inputs.docker_username }}/${{ inputs.repository_name }}:latest
