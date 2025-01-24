@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [BUS_DELETE, BUS_REGISTER]
+        service: [DeleteBus, RegisterBus]
 
     steps:
       - name: Checkout code
@@ -21,7 +21,12 @@ jobs:
       - name: Build and push Docker image for ${{ matrix.service }}
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          REPO_NAME="${{ secrets[format('DOCKER_REPOSITORY_NAME_{0}', matrix.service)] }}"
-          SERVICE_PATH="${{ matrix.service }}" #Store the service name to use in the replace function
-          SERVICE_PATH="${{ replace(SERVICE_PATH, '_', '/') }}" #Replace the _ with /
-          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f ./BusManagement/${{ SERVICE_PATH }}/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest ./BusManagement/${{ SERVICE_PATH }} --push
+
+          # Construcción del nombre del repositorio (CORREGIDO)
+          REPO_NAME="${{ secrets[format('DOCKER_REPOSITORY_NAME_BUS_{0}', matrix.service)] }}"
+
+          # Construcción de la ruta al Dockerfile y al contexto (SIMPLIFICADO)
+          DOCKERFILE_PATH="./BusManagement/${{ matrix.service }}/Dockerfile"
+          CONTEXT_PATH="./BusManagement/${{ matrix.service }}"
+
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
