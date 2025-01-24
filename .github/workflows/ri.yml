@@ -26,6 +26,15 @@ jobs:
           # Construcción del nombre del repositorio (CORREGIDO)
           REPO_NAME="${{ secrets[format('DOCKER_REPOSITORY_NAME_BUS_{0}', matrix.service)] }}"
 
+          # Verifica el valor de REPO_NAME antes de continuar
+          echo "Repo name: $REPO_NAME"
+
+          # Asegúrate de que no haya caracteres no válidos
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: El nombre del repositorio contiene caracteres no válidos."
+            exit 1
+          fi
+
           # Construcción de la ruta al Dockerfile y al contexto (SIMPLIFICADO)
           DOCKERFILE_PATH="./BusManagement/${{ matrix.service }}/Dockerfile"
           CONTEXT_PATH="./BusManagement/${{ matrix.service }}"
