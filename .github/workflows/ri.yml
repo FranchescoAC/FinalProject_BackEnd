@@ -5,19 +5,28 @@ on:
     branches: ["QA"]
 
 jobs:
-  login-and-pull-QA-Delete_Bus:
-    if: github.ref == 'refs/heads/QA'
-    uses: ./BusManagement/DeleteBus/.github/workflows/cd.yml@QA
-    secrets:
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
-      docker_password: ${{ secrets.DOCKER_PASSWORD }}
-      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_DELETE }}
+  login-and-pull-QA-delete:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout DeleteBus
+        uses: actions/checkout@v3
+        with:
+          path: BusManagement/DeleteBus
 
-  login-and-pull-QA-Register-Bus:
-    if: github.ref == 'refs/heads/QA'
-    uses: ./NotificationManagement/RegisterBus/.github/workflows/cd.yml@QA
-    secrets:
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
-      docker_password: ${{ secrets.DOCKER_PASSWORD }}
-      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_REGISTER }}
+      - name: Run DeleteBus Pipeline
+        run: |
+          cd BusManagement/DeleteBus
+          gh workflow run .github/workflows/cd.yml
 
+  login-and-pull-QA-register:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout RegisterBus
+        uses: actions/checkout@v3
+        with:
+          path: BusManagement/RegisterBus
+
+      - name: Run RegisterBus Pipeline
+        run: |
+          cd BusManagement/RegisterBus
+          gh workflow run .github/workflows/cd.yml
