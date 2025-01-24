@@ -14,10 +14,11 @@ jobs:
       matrix:
         service: [DeleteBus, RegisterBus]
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Build and push Docker image for ${{ matrix.service }}
-        uses: ./.github/workflows/cd.yml
-        with:
-          docker_username: ${{ secrets.DOCKER_USERNAME }}
-          docker_password: ${{ secrets.DOCKER_PASSWORD }}
-          repository_name: ${{ secrets[format('DOCKER_REPOSITORY_NAME_{0}', matrix.service)] }}
-          dockerfile_path: ./BusManagement/${{ matrix.service }}/Dockerfile
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # Login directo aquí
+          docker build --build-arg BUILDKIT_INLINE_CACHE=1 -f ./BusManagement/${{ matrix.service }}/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets[format('DOCKER_REPOSITORY_NAME_{0}', matrix.service)] }}:latest ./BusManagement/${{ matrix.service }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets[format('DOCKER_REPOSITORY_NAME_{0}', matrix.service)] }}:latest
