@@ -5,34 +5,16 @@ on:
     branches: ["QA"]
 
 jobs:
-  login-and-pull-QA-Bus-Delete:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout DeleteBus
-        uses: actions/checkout@v3
-        with:
-          path: BusManagement/DeleteBus
+  login-and-pull-QA-delete:
+    uses: BusManagement/DeleteBus/.github/workflows/cd.yml@QA
+    with:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_DELETE }}
 
-      - name: Set up GitHub CLI
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd BusManagement/DeleteBus
-          gh workflow run .github/workflows/cd.yml
-
-
-  login-and-pull-QA-Bus-Register:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout RegisterBus
-        uses: actions/checkout@v3
-        with:
-          path: BusManagement/RegisterBus
-
-      - name: Set up GitHub CLI
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd BusManagement/RegisterBus
-          gh workflow run .github/workflows/cd.yml
-
+  login-and-pull-QA-register:
+    uses: BusManagement/RegisterBus/.github/workflows/cd.yml@QA
+    with:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_REGISTER }}
