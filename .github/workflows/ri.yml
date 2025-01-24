@@ -8,48 +8,30 @@ permissions:
   contents: read
 
 jobs:
-  build-and-push-images:
+  trigger-registerbus-cd:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [DeleteBus, RegisterBus]  # Aquí puedes agregar más servicios si es necesario
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build and push Docker image for ${{ matrix.service }}
-        run: |
-          # Login to Docker using secrets
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Trigger RegisterBus CD pipeline
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          repository: ${{ github.repository }}
+          workflow: .github/workflows/cd.yml
+          ref: refs/heads/QA
+          inputs: # Si es necesario, puedes definir inputs aquí
 
-          # Construcción del nombre del repositorio (CORREGIDO)
-          REPO_NAME="${{ secrets[format('DOCKER_REPOSITORY_NAME_{0}', matrix.service)] }}"
+  trigger-deletebus-cd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-          # Verifica el valor de REPO_NAME antes de continuar
-          echo "Repo name: $REPO_NAME"
-
-          # Verificar si el secreto existe para el servicio
-          if [[ -z "$REPO_NAME" ]]; then
-            echo "ERROR: El secreto DOCKER_REPOSITORY_NAME_{matrix.service} no está definido o está vacío."
-            exit 1
-          fi
-
-          # Asegúrate de que no haya caracteres no válidos
-          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
-            echo "ERROR: El nombre del repositorio contiene caracteres no válidos."
-            exit 1
-          fi
-
-          # Construcción de la ruta al Dockerfile y al contexto (SIMPLIFICADO)
-          DOCKERFILE_PATH="./BusManagement/${{ matrix.service }}/Dockerfile"
-          CONTEXT_PATH="./BusManagement/${{ matrix.service }}"
-
-          # Verificar si el Dockerfile existe
-          if [[ ! -f "$DOCKERFILE_PATH" ]]; then
-            echo "ERROR: Dockerfile no encontrado en la ruta $DOCKERFILE_PATH"
-            exit 1
-          fi
-
-          # Construcción y subida de la imagen Docker
-          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+      - name: Trigger DeleteBus CD pipeline
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          repository: ${{ github.repository }}
+          workflow: .github/workflows/cd.yml
+          ref: refs/heads/QA
+          inputs: # Si es necesario, puedes definir inputs aquí
