@@ -12,27 +12,23 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [BUS_DELETE, BUS_REGISTER]
+        service: [DeleteBus, RegisterBus]  # Aquí puedes agregar más servicios si es necesario
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Build and push Docker image for ${{ matrix.service }}
         run: |
+          # Login to Docker using secrets
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-          # Obtener el nombre del repositorio (con manejo de errores)
-          REPO_NAME="${{ secrets[format('DOCKER_REPOSITORY_NAME_{0}', matrix.service)] }}"
-          echo "Nombre del repositorio: $REPO_NAME" # Imprime el nombre para depuración
+          # Construcción del nombre del repositorio (CORREGIDO)
+          REPO_NAME="${{ secrets[format('DOCKER_REPOSITORY_NAME_BUS_{0}', matrix.service)] }}"
 
           # Construcción de la ruta al Dockerfile y al contexto (SIMPLIFICADO)
-          DOCKERFILE_PATH="./BusManagement/${{ matrix.service | replace('_', '/') }}/Dockerfile"
-          CONTEXT_PATH="./BusManagement/${{ matrix.service | replace('_', '/') }}"
+          DOCKERFILE_PATH="./BusManagement/${{ matrix.service }}/Dockerfile"
+          CONTEXT_PATH="./BusManagement/${{ matrix.service }}"
 
-          # Verificar si el nombre del repositorio es válido (RECOMENDADO)
-          if [[ ! "$REPO_NAME" =~ ^[a-z0-9._-]+$ ]]; then
-            echo "Error: El nombre del repositorio '$REPO_NAME' contiene caracteres inválidos. Solo se permiten letras minúsculas, números, guiones bajos, guiones medios y puntos."
-            exit 1
-          fi
-
+          # Construcción y subida de la imagen Docker
           docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
