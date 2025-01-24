@@ -12,7 +12,7 @@ on:
 
 jobs:
   login-and-push:
-    runs-on: ubuntu-repository_name
+    runs-on: ubuntu-latest
     steps:
       # Clonar el código del repositorio
       - name: Checkout code
@@ -28,5 +28,5 @@ jobs:
       # Construir y enviar la imagen a Docker Hub
       - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ secrets.docker_username }}/${{ secrets.repository_name }}:lastest .
-          docker push ${{ secrets.docker_username }}/${{ secrets.repository_name }}:lastest
+          docker build -t ${{ secrets.docker_username }}/${{ secrets.repository_name }}:latest .
+          docker push ${{ secrets.docker_username }}/${{ secrets.repository_name }}:latest

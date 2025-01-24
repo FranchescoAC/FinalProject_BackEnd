@@ -5,24 +5,19 @@ on:
     branches: ["QA"]
 
 jobs:
-  login-and-pull-QA-delete:
+  login-and-pull-QA-Delete_Bus:
     if: github.ref == 'refs/heads/QA'
-    name: My first step - check out repositoryo
-    uses: actions/checkout@v4
-    name: My first step - check out repositorys
-    uses: ./BusManagement/DeleteBus/.github/workflows
+    uses: ./BusManagement/DeleteBus/.github/workflows/cd.yml@QA
     secrets:
-      docker_password: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
       repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_DELETE }}
 
-  login-and-pull-QA-register:
+  login-and-pull-QA-Register-Bus:
     if: github.ref == 'refs/heads/QA'
-    name: My first step - check out repositorye
-    uses: actions/checkout@v4
-    name: My first step - check out repository
-    uses: ./BusManagement/RegisterBus/.github/workflows
+    uses: ./NotificationManagement/RegisterBus/.github/workflows/cd.yml@QA
     secrets:
-      docker_password: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
       repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_REGISTER }}
+
