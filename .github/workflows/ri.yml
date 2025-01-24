@@ -29,6 +29,12 @@ jobs:
           # Verifica el valor de REPO_NAME antes de continuar
           echo "Repo name: $REPO_NAME"
 
+          # Verificar si el secreto existe para el servicio
+          if [[ -z "$REPO_NAME" ]]; then
+            echo "ERROR: El secreto DOCKER_REPOSITORY_NAME_{matrix.service} no está definido o está vacío."
+            exit 1
+          fi
+
           # Asegúrate de que no haya caracteres no válidos
           if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
             echo "ERROR: El nombre del repositorio contiene caracteres no válidos."
@@ -38,6 +44,12 @@ jobs:
           # Construcción de la ruta al Dockerfile y al contexto (SIMPLIFICADO)
           DOCKERFILE_PATH="./BusManagement/${{ matrix.service }}/Dockerfile"
           CONTEXT_PATH="./BusManagement/${{ matrix.service }}"
+
+          # Verificar si el Dockerfile existe
+          if [[ ! -f "$DOCKERFILE_PATH" ]]; then
+            echo "ERROR: Dockerfile no encontrado en la ruta $DOCKERFILE_PATH"
+            exit 1
+          fi
 
           # Construcción y subida de la imagen Docker
           docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
