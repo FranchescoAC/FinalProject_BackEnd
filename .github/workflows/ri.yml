@@ -4,6 +4,10 @@ on:
   push:
     branches: ["QA"]
 
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   login-and-pull-QA-delete:
     uses: BusManagement/DeleteBus/.github/workflows/cd.yml@QA

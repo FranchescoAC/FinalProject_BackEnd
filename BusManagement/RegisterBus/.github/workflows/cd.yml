@@ -10,6 +10,10 @@ on:
       repository_name:
         required: true
 
+permissions:
+  actions: read
+  contents: read
+
   workflow_dispatch: # Esto permite que el workflow sea ejecutado manualmente o por otros workflows.
 
 jobs:
