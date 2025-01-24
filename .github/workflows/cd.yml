@@ -16,7 +16,7 @@ jobs:
   login-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code # Este paso es CRUCIAL
+      - name: Checkout code  # Crucial step to download your codebase
         uses: actions/checkout@v3
 
       - name: Login to Docker Hub

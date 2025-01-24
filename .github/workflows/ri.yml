@@ -22,5 +22,5 @@ jobs:
         with:
           docker_username: ${{ secrets.DOCKER_USERNAME }}
           docker_password: ${{ secrets.DOCKER_PASSWORD }}
-          repository_name: ${{ secrets[format('DOCKER_REPOSITORY_NAME_{0}', matrix.service)] }} # Corrección aquí
+          repository_name: ${{ secrets[format('DOCKER_REPOSITORY_NAME_{0}', matrix.service)] }}
           dockerfile_path: ./BusManagement/${{ matrix.service }}/Dockerfile
