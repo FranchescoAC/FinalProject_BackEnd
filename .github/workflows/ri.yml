@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  login-and-pull-QA-delete:
+  login-and-pull-QA-Delete:
     name: Delete Bus Image
     uses: ./.github/workflows/cd.yml
     with:
@@ -18,7 +18,7 @@ jobs:
       repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_DELETE }}
       dockerfile_path: ./BusManagement/DeleteBus/Dockerfile # Ruta al Dockerfile
 
-  login-and-pull-QA-register:
+  login-and-pull-QA-Register:
     name: Register Bus Image
     uses: ./.github/workflows/cd.yml
     with:
