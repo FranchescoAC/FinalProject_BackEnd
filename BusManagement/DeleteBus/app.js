@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const deleteRoutes = require('../DeleteBus/src/routes/deleteRoutes');
+const deleteRoutes = require('./src/routes/deleteRoutes');
 const dotenv = require('dotenv');
 
 // Configuración

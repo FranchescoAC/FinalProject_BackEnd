@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [DeleteBus, RegisterBus]  # Aquí puedes agregar más servicios si es necesario
+        service: [DELETEBUS, REGISTERBUS]  # Aquí puedes agregar más servicios si es necesario
 
     steps:
       - name: Checkout code
