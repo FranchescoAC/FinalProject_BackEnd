@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Register Bus
-        uses: /BusManagement/RegisterBus/.github/workflows/cd.yml # Ruta relativa
+        uses: .github/workflows/Register-Bus.yml  # Ruta relativa
 
 jobs:
   UpdateBus:
@@ -31,4 +31,4 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Update Bus Availability
-        uses: /BusManagement/UpdateBusAvailability/.github/workflows/cd.yml # Ruta relativa
+        uses: .github/workflows/Update-Bus.yml  # Ruta relativa
