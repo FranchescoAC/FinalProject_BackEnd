@@ -1,8 +1,7 @@
 name: CI/CD for RegisterBus
 
 on:
-  repository_dispatch:
-    types: [registerbus]
+  workflow_dispatch:
 
 permissions:
   contents: read

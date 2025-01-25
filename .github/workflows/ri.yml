@@ -1,4 +1,4 @@
-name: Registry image dispatcher
+name: Trigger sub-workflows
 
 on:
   push:
@@ -9,41 +9,19 @@ permissions:
 
 jobs:
   trigger-registerbus:
+    name: Trigger RegisterBus workflow
     runs-on: ubuntu-latest
     steps:
       - name: Trigger RegisterBus workflow
-        uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.repos.createDispatchEvent({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              event_type: "registerbus",
-            });
+        run: |
+          echo "Triggering RegisterBus workflow"
+          gh workflow run cd.yml -R ${{ github.repository }} -f service=RegisterBus
 
   trigger-deletebus:
+    name: Trigger DeleteBus workflow
     runs-on: ubuntu-latest
     steps:
       - name: Trigger DeleteBus workflow
-        uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.repos.createDispatchEvent({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              event_type: "deletebus",
-            });
-            
-  trigger-deleteticket:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger DeleteBus workflow
-        uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.repos.createDispatchEvent({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              event_type: "deteticket",
-            });
-
+        run: |
+          echo "Triggering DeleteBus workflow"
+          gh workflow run cd.yml -R ${{ github.repository }} -f service=DeleteBus
