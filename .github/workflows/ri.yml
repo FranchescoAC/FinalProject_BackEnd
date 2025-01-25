@@ -3,7 +3,7 @@ on:
   push:
     branches: [dev]
 
-jobs:
+Register:
   manage_buses:
     runs-on: ubuntu-latest
     steps:
@@ -13,8 +13,21 @@ jobs:
       - name: Register-Bus
         uses: ./.github/workflows/bus-management/Register-Bus.yml # Ruta RELATIVA CORRECTA
 
+Delete:
+  manage_buses:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Delete-Bus
         uses: ./.github/workflows/bus-management/Delete-Bus.yml # Ruta RELATIVA CORRECTA
 
+Update:
+  manage_buses:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Update-Bus
         uses: ./.github/workflows/bus-management/Update-Bus.yml # Ruta RELATIVA CORRECTA
