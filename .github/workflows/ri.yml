@@ -13,7 +13,7 @@ jobs:
       - name: Delete-Bus
         uses: .github/workflows/Delete-Bus.yml # Ruta relativa
 
-jobs:
+jobs2:
   RegisterBus:
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +23,7 @@ jobs:
       - name: Register Bus
         uses: .github/workflows/Register-Bus.yml  # Ruta relativa
 
-jobs:
+jobs3:
   UpdateBus:
     runs-on: ubuntu-latest
     steps:
