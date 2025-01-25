@@ -1,0 +1,13 @@
+{
+  "name": "list-route-service",
+  "version": "1.0.0",
+  "description": "Microservicio para actualizar rutas",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3"
+  }
+}
