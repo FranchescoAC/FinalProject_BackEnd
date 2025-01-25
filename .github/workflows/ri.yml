@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  workflows: write
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -21,7 +22,9 @@ jobs:
       - name: Trigger RegisterBus workflow
         run: |
           echo "Triggering RegisterBus workflow"
-          gh workflow run cd.yml -R ${{ github.repository }} -f service=RegisterBus
+          gh workflow run BusManagement/RegisterBus/.github/workflows/cd.yml \
+            -R ${{ github.repository }} \
+            -f service=RegisterBus
 
   trigger-deletebus:
     name: Trigger DeleteBus workflow
@@ -33,4 +36,6 @@ jobs:
       - name: Trigger DeleteBus workflow
         run: |
           echo "Triggering DeleteBus workflow"
-          gh workflow run cd.yml -R ${{ github.repository }} -f service=DeleteBus
+          gh workflow run BusManagement/DeleteBus/.github/workflows/cd.yml \
+            -R ${{ github.repository }} \
+            -f service=DeleteBus
