@@ -9,8 +9,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Delete Bus
-        uses: ./.github/workflows/DeleteBus.yml # Ruta relativa
+      - name: Delete-Bus
+        uses: ./Delete-Bus.yml # Ruta relativa
 
       - name: Register Bus
         uses: ./.github/workflows/BusManagement/RegisterBus/.github/workflows/cd.yml # Ruta relativa
