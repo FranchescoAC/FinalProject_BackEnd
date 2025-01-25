@@ -7,11 +7,17 @@ on:
 permissions:
   contents: write
 
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   trigger-registerbus:
     name: Trigger RegisterBus workflow
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Trigger RegisterBus workflow
         run: |
           echo "Triggering RegisterBus workflow"
@@ -21,6 +27,9 @@ jobs:
     name: Trigger DeleteBus workflow
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Trigger DeleteBus workflow
         run: |
           echo "Triggering DeleteBus workflow"
