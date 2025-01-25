@@ -1,49 +1,35 @@
-name: Registry image
+name: Registry image dispatcher
 
 on:
   push:
     branches: ["dev"]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  deletebus:
+  trigger-registerbus:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Trigger RegisterBus workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              event_type: "registerbus",
+            });
 
-      - name: Run DeleteBus workflow
-        working-directory: ./BusManagement/DeleteBus
-        run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_DELTEBUS }}"
-          echo "Repo name: $REPO_NAME"
-          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
-            echo "ERROR: Invalid repository name."
-            exit 1
-          fi
-          DOCKERFILE_PATH="./Dockerfile"
-          CONTEXT_PATH="."
-          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
-
-  registerbus:
+  trigger-deletebus:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Run RegisterBus workflow
-        working-directory: ./BusManagement/RegisterBus
-        run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}"
-          echo "Repo name: $REPO_NAME"
-          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
-            echo "ERROR: Invalid repository name."
-            exit 1
-          fi
-          DOCKERFILE_PATH="./Dockerfile"
-          CONTEXT_PATH="."
-          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+      - name: Trigger DeleteBus workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              event_type: "deletebus",
+            });
