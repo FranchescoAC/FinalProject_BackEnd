@@ -12,23 +12,3 @@ jobs:
 
       - name: Delete-Bus
         uses: .github/workflows/Delete-Bus.yml # Ruta relativa
-
-jobs:
-  RegisterBus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Register Bus
-        uses: /BusManagement/RegisterBus/.github/workflows/cd.yml # Ruta relativa
-
-jobs:
-  UpdateBus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Update Bus Availability
-        uses: /BusManagement/UpdateBusAvailability/.github/workflows/cd.yml # Ruta relativa
