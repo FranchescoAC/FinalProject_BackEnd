@@ -3,31 +3,27 @@ on:
   push:
     branches: [dev]
 
-jobs:
-  Register:
+jobs: # UN SOLO BLOQUE jobs:
+  register_bus: # Job para registrar un bus
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Register Bus
+        uses: ./.github/workflows/bus-management/register-bus.yml
 
-      - name: Register-Bus
-        uses: ./.github/workflows/bus-management/Register-Bus.yml # Ruta RELATIVA CORRECTA
-
-jobs:
-  Delete:
+  delete_bus: # Job para borrar un bus (independiente)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Delete Bus
+        uses: ./.github/workflows/bus-management/delete-bus.yml
 
-      - name: Delete-Bus
-        uses: ./.github/workflows/bus-management/Delete-Bus.yml # Ruta RELATIVA CORRECTA
-
-jobs:
-  Update:
+  update_bus: # Job para actualizar un bus (independiente)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Update-Bus
-        uses: ./.github/workflows/bus-management/Update-Bus.yml # Ruta RELATIVA CORRECTA
+      - name: Update Bus Availability
+        uses: ./.github/workflows/bus-management/update-bus-availability.yml
