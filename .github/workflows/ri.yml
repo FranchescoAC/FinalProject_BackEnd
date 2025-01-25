@@ -10,11 +10,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Register Bus
+      - name: Register-Bus
         uses: ./.github/workflows/bus-management/Register-Bus.yml # Ruta RELATIVA CORRECTA
 
-      - name: Delete Bus
+      - name: Delete-Bus
         uses: ./.github/workflows/bus-management/Delete-Bus.yml # Ruta RELATIVA CORRECTA
 
-      - name: Update Bus Availability
-        uses: ./.github/workflows/bus-management/Update-Bus-Availability.yml # Ruta RELATIVA CORRECTA
+      - name: Update-Bus
+        uses: ./.github/workflows/bus-management/Update-Bus.yml # Ruta RELATIVA CORRECTA
