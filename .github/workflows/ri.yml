@@ -4,31 +4,17 @@ on:
     branches: [dev]
 
 jobs:
-  DeleteBus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Delete-Bus
-        uses: .github/workflows/bus-management/Delete-Bus.yml # Ruta relativa
-
-jobs2:
-  RegisterBus:
+  manage_buses:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Register Bus
-        uses: .github/workflows/bus-management/Register-Bus.yml  # Ruta relativa
+        uses: ./.github/workflows/bus-management/Register-Bus.yml # Ruta RELATIVA CORRECTA
 
-jobs3:
-  UpdateBus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Delete Bus
+        uses: ./.github/workflows/bus-management/Delete-Bus.yml # Ruta RELATIVA CORRECTA
 
       - name: Update Bus Availability
-        uses: .github/workflows/bus-management/Update-Bus.yml  # Ruta relativa
+        uses: ./.github/workflows/bus-management/Update-Bus-Availability.yml # Ruta RELATIVA CORRECTA
