@@ -2,7 +2,7 @@ name: CI/CD for DeleteBus
 
 on:
   push:
-    branches: ["QA"]
+    branches: ["dev"]
 
 permissions:
   contents: read
