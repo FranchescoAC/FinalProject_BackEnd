@@ -1,41 +1,19 @@
-name: Registry image dispatcher
-
+name: Main Workflow
 on:
   push:
-    branches: ["dev"]
-
-permissions:
-  contents: write
-
+    branches: [dev] # o cualquier otro evento que desees
 jobs:
-  trigger-registerbus:
+  manage_buses:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Trigger RegisterBus workflow
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Triggering RegisterBus workflow"
-          gh workflow run cd.yml \
-            -R ${{ github.repository }} \
-            -f branch=dev \
-            -f service=RegisterBus
+      - name: Delete Bus
+        uses: ./.github/workflows/BusManagement/DeleteBus.yml # Ruta relativa
 
-  trigger-deletebus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Register Bus
+        uses: ./.github/workflows/BusManagement/RegisterBus.yml # Ruta relativa
 
-      - name: Trigger DeleteBus workflow
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Triggering DeleteBus workflow"
-          gh workflow run cd.yml \
-            -R ${{ github.repository }} \
-            -f branch=dev \
-            -f service=DeleteBus
+      - name: Update Bus Availability
+        uses: ./.github/workflows/BusManagement/update-bus-availability.yml # Ruta relativa
