@@ -1,6 +1,10 @@
-name: Register Bus Workflow
+name: CI/CD for RegisterBus
+
 on:
-  workflow_call:
+workflow_call:
+
+permissions:
+  contents: read
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
