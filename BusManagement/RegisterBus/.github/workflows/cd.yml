@@ -1,14 +1,16 @@
-name: CI/CD for RegisterBus
+name: CD for RegisterBus
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Necesario para que sea ejecutado manualmente o desde otro workflow
     inputs:
-      service:
-        required: true
-        description: "Name of the service"
       branch:
-        required: false
-        description: "Branch to use"
+        description: 'Branch to build'
+        required: true
+        default: 'dev'
+
+permissions:
+  contents: write
+
   push:
     branches: ["dev"]
 

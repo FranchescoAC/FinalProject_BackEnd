@@ -1,14 +1,12 @@
-name: Trigger sub-workflows
+name: Registry image
 
 on:
   push:
     branches: ["dev"]
 
 permissions:
-  contents: write # Otorga permisos para que el workflow pueda llamar a otros workflows
-
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  contents: write
+  actions: write # Necesario para ejecutar otros workflows
 
 jobs:
   trigger-registerbus:
@@ -18,25 +16,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
+
       - name: Trigger RegisterBus workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Triggering RegisterBus workflow"
           gh workflow run cd.yml \
             -R ${{ github.repository }} \
-            -f service=RegisterBus \
-            -f branch=dev
-
-  trigger-deletebus:
-    name: Trigger DeleteBus workflow
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Trigger DeleteBus workflow
-        run: |
-          echo "Triggering DeleteBus workflow"
-          gh workflow run cd.yml \
-            -R ${{ github.repository }} \
-            -f service=DeleteBus \
             -f branch=dev
