@@ -8,13 +8,34 @@ permissions:
   contents: read
 
 jobs:
+  deletebus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run DeleteBus workflow
+        working-directory: ./BusManagement/DeleteBus
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_DELTEBUS }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./Dockerfile"
+          CONTEXT_PATH="."
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+
   registerbus:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build and push Docker image for RegisterBus
+      - name: Run RegisterBus workflow
+        working-directory: ./BusManagement/RegisterBus
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}"
@@ -23,64 +44,6 @@ jobs:
             echo "ERROR: Invalid repository name."
             exit 1
           fi
-          DOCKERFILE_PATH="./BusManagement/RegisterBus/Dockerfile"
-          CONTEXT_PATH="./BusManagement/RegisterBus"
-          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
-
-  deletebus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build and push Docker image for DeleteBus
-        run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}"
-          echo "Repo name: $REPO_NAME"
-          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
-            echo "ERROR: Invalid repository name."
-            exit 1
-          fi
-          DOCKERFILE_PATH="./BusManagement/DeleteBus/Dockerfile"
-          CONTEXT_PATH="./BusManagement/DeleteBus"
-          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
-
-  updatebus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build and push Docker image for UpdateBus
-        run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}"
-          echo "Repo name: $REPO_NAME"
-          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
-            echo "ERROR: Invalid repository name."
-            exit 1
-          fi
-          DOCKERFILE_PATH="./BusManagement/UpdateBusAvailability/Dockerfile"
-          CONTEXT_PATH="./BusManagement/UpdateBusAvailability"
-          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
-
-
-  ViewBusDetails:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build and push Docker image for ViewBusDetails
-        run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_BUS_VIEW }}"
-          echo "Repo name: $REPO_NAME"
-          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
-            echo "ERROR: Invalid repository name."
-            exit 1
-          fi
-          DOCKERFILE_PATH="./BusManagement/ViewBusDetails/Dockerfile"
-          CONTEXT_PATH="./BusManagement/ViewBusDetails"
+          DOCKERFILE_PATH="./Dockerfile"
+          CONTEXT_PATH="."
           docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
