@@ -10,10 +10,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Delete Bus
-        uses: ./.github/workflows/BusManagement/DeleteBus.yml # Ruta relativa
+        uses: ./.github/workflows/BusManagement/DeleteBus/.github/workflows/cd.yml # Ruta relativa
 
       - name: Register Bus
-        uses: ./.github/workflows/BusManagement/RegisterBus.yml # Ruta relativa
+        uses: ./.github/workflows/BusManagement/RegisterBus/.github/workflows/cd.yml # Ruta relativa
 
       - name: Update Bus Availability
-        uses: ./.github/workflows/BusManagement/update-bus-availability.yml # Ruta relativa
+        uses: ./.github/workflows/BusManagement/UpdateBusAvailability/.github/workflows/cd.yml # Ruta relativa
