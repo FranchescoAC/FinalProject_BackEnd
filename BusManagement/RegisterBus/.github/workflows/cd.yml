@@ -1,18 +1,19 @@
 name: CD for RegisterBus
 
 on:
-  workflow_dispatch: # Necesario para que sea ejecutado manualmente o desde otro workflow
+  workflow_dispatch:
     inputs:
       branch:
         description: 'Branch to build'
         required: true
         default: 'dev'
+      service:
+        description: 'Service name'
+        required: true
+        default: 'RegisterBus'
 
 permissions:
   contents: write
-
-  push:
-    branches: ["dev"]
 
 jobs:
   build-and-push-image:
@@ -21,7 +22,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build and push Docker image for RegisterBus
+      - name: Build and push Docker image
         run: |
-          echo "Building Docker image for ${{ github.event.inputs.service }}"
-          # Aquí va tu script personalizado
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets['DOCKER_REPOSITORY_NAME_' + github.event.inputs.service.upper() ]}}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./BusManagement/${{ github.event.inputs.service }}/Dockerfile"
+          CONTEXT_PATH="./BusManagement/${{ github.event.inputs.service }}"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push

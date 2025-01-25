@@ -1,4 +1,4 @@
-name: Registry image
+name: Registry image dispatcher
 
 on:
   push:
@@ -6,20 +6,13 @@ on:
 
 permissions:
   contents: write
-  actions: write # Necesario para ejecutar otros workflows
 
 jobs:
   trigger-registerbus:
-    name: Trigger RegisterBus workflow
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Install GitHub CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gh
 
       - name: Trigger RegisterBus workflow
         env:
@@ -28,4 +21,21 @@ jobs:
           echo "Triggering RegisterBus workflow"
           gh workflow run cd.yml \
             -R ${{ github.repository }} \
-            -f branch=dev
+            -f branch=dev \
+            -f service=RegisterBus
+
+  trigger-deletebus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Trigger DeleteBus workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Triggering DeleteBus workflow"
+          gh workflow run cd.yml \
+            -R ${{ github.repository }} \
+            -f branch=dev \
+            -f service=DeleteBus
