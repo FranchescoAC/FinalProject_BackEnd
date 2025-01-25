@@ -3,27 +3,27 @@ on:
   push:
     branches: [dev]
 
-jobs: # UN SOLO BLOQUE jobs:
-  register_bus: # Job para registrar un bus
+jobs:
+  register_bus:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Register Bus
-        uses: ./.github/workflows/bus-management/Register-Bus.yml
+        uses: ./.github/workflows/bus-management/Register-Bus.yml # EXACTO: con mayúsculas y guión
 
-  delete_bus: # Job para borrar un bus (independiente)
+  delete_bus:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Delete Bus
-        uses: ./.github/workflows/bus-management/Delete-Bus.yml
+        uses: ./.github/workflows/bus-management/Delete-Bus.yml # EXACTO: con mayúsculas y guión
 
-  update_bus: # Job para actualizar un bus (independiente)
+  update_bus:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Update Bus Availability
-        uses: ./.github/workflows/bus-management/Update-Bus.yml
+        uses: ./.github/workflows/bus-management/Update-Bus.yml # EXACTO: con mayúsculas y guión
