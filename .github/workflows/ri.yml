@@ -1,7 +1,7 @@
 name: Main Workflow
 on:
   push:
-    branches: [dev] # o cualquier otro evento que desees
+    branches: [dev]
 jobs:
   manage_buses:
     runs-on: ubuntu-latest
