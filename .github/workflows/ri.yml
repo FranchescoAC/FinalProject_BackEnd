@@ -5,8 +5,7 @@ on:
     branches: ["dev"]
 
 permissions:
-  contents: write
-  workflows: write
+  contents: write # Otorga permisos para que el workflow pueda llamar a otros workflows
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -22,9 +21,10 @@ jobs:
       - name: Trigger RegisterBus workflow
         run: |
           echo "Triggering RegisterBus workflow"
-          gh workflow run BusManagement/RegisterBus/.github/workflows/cd.yml \
+          gh workflow run cd.yml \
             -R ${{ github.repository }} \
-            -f service=RegisterBus
+            -f service=RegisterBus \
+            -f branch=dev
 
   trigger-deletebus:
     name: Trigger DeleteBus workflow
@@ -36,6 +36,7 @@ jobs:
       - name: Trigger DeleteBus workflow
         run: |
           echo "Triggering DeleteBus workflow"
-          gh workflow run BusManagement/DeleteBus/.github/workflows/cd.yml \
+          gh workflow run cd.yml \
             -R ${{ github.repository }} \
-            -f service=DeleteBus
+            -f service=DeleteBus \
+            -f branch=dev
