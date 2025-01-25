@@ -33,3 +33,17 @@ jobs:
               repo: context.repo.repo,
               event_type: "deletebus",
             });
+            
+  trigger-deleteticket:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger DeleteBus workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              event_type: "deteticket",
+            });
+
