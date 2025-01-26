@@ -7,7 +7,7 @@ jobs:
   register_bus:
     uses: ./.github/workflows/Register-Bus.yml
     secrets:
-      docker_repo_name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
+      docker_repo_name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS}}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
 
