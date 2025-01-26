@@ -1,19 +1,9 @@
-name: CI/CD for UpdateBus
-
+name: Register Bus
 on:
   workflow_call:
-    inputs:
+    secrets:
       docker-repo-name:
         required: true
-        type: string
-    secrets:
-      DOCKER_USERNAME:
-        required: true
-      DOCKER_PASSWORD:
-        required: true
-
-permissions:
-  contents: read
 
 jobs:
   build-and-push-image:
@@ -22,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build and push Docker image for UpdateBus
+      - name: Build and push Docker image
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           REPO_NAME="${{ inputs.docker-repo-name }}"

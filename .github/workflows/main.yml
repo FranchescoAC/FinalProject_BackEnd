@@ -6,15 +6,15 @@ on:
 jobs:
   register_bus:
     uses: ./.github/workflows/Register-Bus.yml
-    with:
+    secrets:
       docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
 
   delete_bus:
     uses: ./.github/workflows/Delete-Bus.yml
-    with:
+    secrets:
       docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
 
   update_bus:
     uses: ./.github/workflows/Update-Bus.yml
-    with:
+    secrets:
       docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_UPDATEBUS }}
