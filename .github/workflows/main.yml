@@ -15,8 +15,12 @@ jobs:
     uses: ./.github/workflows/Delete-Bus.yml
     secrets:
       docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker-password: ${{ secrets.DOCKER_PASSWORD }}
 
   update_bus:
     uses: ./.github/workflows/Update-Bus.yml
     secrets:
-      docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_UPDATEBUS }}
+      docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker-password: ${{ secrets.DOCKER_PASSWORD }}
