@@ -4,6 +4,10 @@ on:
     secrets:
       docker-repo-name:
         required: true
+      docker_username:
+        required: true
+      docker-password:
+        required: true
 
 jobs:
   build-and-push-image:
@@ -14,7 +18,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          echo "${{ secrets.docker-password }}" | docker login -u "${{ secrets.docker_username }}" --password-stdin
           REPO_NAME="${{ inputs.docker-repo-name }}"
           echo "Repo name: $REPO_NAME"
           if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
