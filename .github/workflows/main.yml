@@ -5,22 +5,32 @@ on:
 
 jobs:
   register_bus:
-    uses: ./.github/workflows/Register-Bus.yml
-    secrets:
-      docker_repo_name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS}}
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
-      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Register Bus
+        uses: ./.github/workflows/Register-Bus.yml # Ruta correcta
+        with:
+          docker_repo_name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }} # ¡IMPORTANTE! Se pasa como INPUT, no como secret.
+          
 
-  delete_bus:
-    uses: ./.github/workflows/Delete-Bus.yml
-    secrets:
-      docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
-      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+  delete_bus: # (estructura similar)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Delete Bus
+        uses: ./.github/workflows/Delete-Bus.yml
+        with:
+          docker_repo_name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
 
-  update_bus:
-    uses: ./.github/workflows/Update-Bus.yml
-    secrets:
-      docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
-      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+  update_bus: # (estructura similar)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Bus
+        uses: actions/checkout@v3
+      - name: Update Bus Availability
+        uses: ./.github/workflows/Update-Bus.yml
+        with:
+          docker_repo_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}
