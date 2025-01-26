@@ -1,0 +1,44 @@
+name: Main Workflow
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  register_bus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Register Bus
+        uses: ./.github/workflows/bus-management/Register-Bus.yml
+        with:
+          docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
+        secrets:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  delete_bus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Delete Bus
+        uses: ./.github/workflows/bus-management/Delete-Bus.yml
+        with:
+          docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
+        secrets:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  update_bus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Update Bus Availability
+        uses: ./.github/workflows/bus-management/Update-Bus.yml
+        with:
+          docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_UPDATEBUS }}
+        secrets:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
