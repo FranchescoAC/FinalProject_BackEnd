@@ -10,7 +10,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Register Bus
-        uses: ./.github/workflows/Register-Bus.yml
+        uses: Register-Bus.yml
         with:
           docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
 
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Delete Bus
-        uses: ./.github/workflows/Delete-Bus.yml
+        uses: Delete-Bus.yml
         with:
           docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
 
@@ -30,6 +30,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Update Bus Availability
-        uses: ./.github/workflows/Update-Bus.yml
+        uses: Update-Bus.yml
         with:
           docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_UPDATEBUS }}
