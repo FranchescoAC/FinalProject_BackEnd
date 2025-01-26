@@ -5,31 +5,16 @@ on:
 
 jobs:
   register_bus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Register Bus
-        uses: ./.github/workflows/Register-Bus.yml
-        with:
-          docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
+    uses: ./.github/workflows/Register-Bus.yml
+    with:
+      docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
 
   delete_bus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Delete Bus
-        uses: ./.github/workflows/Delete-Bus.yml
-        with:
-          docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
+    uses: ./.github/workflows/Delete-Bus.yml
+    with:
+      docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
 
   update_bus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Update Bus Availability
-        uses: ./.github/workflows/Update-Bus.yml
-        with:
-          docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_UPDATEBUS }}
+    uses: ./.github/workflows/Update-Bus.yml
+    with:
+      docker-repo-name: ${{ secrets.DOCKER_REPOSITORY_NAME_UPDATEBUS }}
