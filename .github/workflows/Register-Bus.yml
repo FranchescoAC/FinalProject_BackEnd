@@ -2,11 +2,11 @@ name: Delete Bus
 on:
   workflow_call:
     secrets:
-      docker-repo-name:
+      docker_repo_name:
         required: true
       docker_username:
         required: true
-      docker-password:
+      docker_password:
         required: true
 
 jobs:
@@ -18,8 +18,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          echo "${{ secrets.docker-password }}" | docker login -u "${{ secrets.docker_username }}" --password-stdin
-          REPO_NAME="${{ inputs.docker-repo-name }}"
+          echo "${{ secrets.docker_password }}" | docker login -u "${{ secrets.docker_username }}" --password-stdin
+          REPO_NAME="${{ inputs.docker_repo_name }}"
           echo "Repo name: $REPO_NAME"
           if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
             echo "ERROR: Invalid repository name."
