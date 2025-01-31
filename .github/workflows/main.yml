@@ -240,3 +240,83 @@ jobs:
           DOCKERFILE_PATH="./TicketManagement/ViewTicket/Dockerfile"
           CONTEXT_PATH="./TicketManagement/ViewTicket"
           docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+
+
+
+
+
+  Payment-Delete:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for DeletePayment
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_PAYMENT_DELETE }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./PaymentManagement/DeletePayment/Dockerfile"
+          CONTEXT_PATH="./PaymentManagement/DeletePayment"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+
+  Payment-List:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for ListPayment
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_PAYMENT_LIST }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./PaymentManagement/ListPayment/Dockerfile"
+          CONTEXT_PATH="./PaymentManagement/ListPayment"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+
+  Payment-Register:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for RegisterPayment
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_PAYMENT_REGISTER }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./PaymentManagement/RegisterPayment/Dockerfile"
+          CONTEXT_PATH="./PaymentManagement/RegisterPayment"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+
+  Payment-Update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for UpdatePayment
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_PAYMENT_UPDATE }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./PaymentManagement/UpdatePayment/Dockerfile"
+          CONTEXT_PATH="./PaymentManagement/UpdatePayment"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
