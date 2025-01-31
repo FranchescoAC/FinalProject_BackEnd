@@ -399,3 +399,103 @@ jobs:
           DOCKERFILE_PATH="./RouteManagement/UpdateRoute/Dockerfile"
           CONTEXT_PATH="./RouteManagement/UpdateRoute"
           docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+  
+
+
+
+
+  User-Delete:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for DeleteUser
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_USER_DELETE }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./UserManagement/DeleteUser/Dockerfile"
+          CONTEXT_PATH="./UserManagement/DeleteUser"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+  
+  User-Login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for LoginUser
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_USER_LOGIN }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./UserManagement/LoginUser/Dockerfile"
+          CONTEXT_PATH="./UserManagement/LoginUser"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+  
+  User-Register:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for RegisterUser
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_USER_REGISTER }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./UserManagement/RegisterUser/Dockerfile"
+          CONTEXT_PATH="./UserManagement/RegisterUser"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+  
+  User-Update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for UpdateUser
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_USER_UPDATE }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./UserManagement/UpdateUser/Dockerfile"
+          CONTEXT_PATH="./UserManagement/UpdateUser"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+  
+  User-View:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for ViewUser
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_USER_VIEW }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./UserManagement/ViewUser/Dockerfile"
+          CONTEXT_PATH="./UserManagement/ViewUser"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+  
