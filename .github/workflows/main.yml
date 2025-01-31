@@ -71,7 +71,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build and push Docker image for UpdateBus
+      - name: Build and push Docker image for ViewBus
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_BUS_VIEW }}"
@@ -84,4 +84,63 @@ jobs:
           CONTEXT_PATH="./BusManagement/ViewBusDetails"
           docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
   
+
+
+
+  Create-Notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for CreateNotification
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_CREATE }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./NotificationManagement/CreateNotifications/Dockerfile"
+          CONTEXT_PATH="./NotificationManagement/CreateNotifications"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+  
+  Delete-Notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for DeleteNotifications
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_DELETE }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./NotificationManagement/DeleteNotifications/Dockerfile"
+          CONTEXT_PATH="./NotificationManagement/DeleteNotifications"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+  
+  View-Notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image for ViewNotifications
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          REPO_NAME="${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_VIEW }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH="./NotificationManagement/ViewNotifications/Dockerfile"
+          CONTEXT_PATH="./NotificationManagement/ViewNotifications"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.DOCKER_USERNAME }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
   
