@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "0y1inqocBFnk7al8YTA65JzJFbSuNOqM0I3eAgekNzs=",
+  "Source": "RegisterPayment",
+  "BasePath": "_content/RegisterPayment",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
