@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
+<<<<<<< HEAD
 	"github.com/dgrijalva/jwt-go"
 	"DeleteUser/model"
 	"time"
@@ -49,10 +50,25 @@ func (dc DeleteController) DeleteUser(c *gin.Context) {
 
 	// Delete the user from the database
 	err = model.DeleteUserByID(id)
+=======
+	"DeleteUser/model"
+)
+
+type DeleteController struct {}
+
+func (dc DeleteController) DeleteUser(c *gin.Context) {
+	id := c.Param("id")
+	err := model.DeleteUserByID(id)
+>>>>>>> e6b002ebf0161aa606a31e93b52720ae9ae4adad
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+<<<<<<< HEAD
 
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
 }
+=======
+	c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
+}
+>>>>>>> e6b002ebf0161aa606a31e93b52720ae9ae4adad

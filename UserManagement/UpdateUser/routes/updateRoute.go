@@ -1,6 +1,7 @@
 package routes
 
 import (
+<<<<<<< HEAD
 	"net/http"  // Agregar esta importación
 	"github.com/gin-gonic/gin"
 	"UpdateUser/controller"
@@ -20,3 +21,13 @@ func UpdateRoutes(router *gin.Engine) {
 	// Iniciar el servidor usando el handler con CORS habilitado
 	http.ListenAndServe(":8084", handler)  // Aquí usa http.ListenAndServe con el handler
 }
+=======
+	"github.com/gin-gonic/gin"
+	"UpdateUser/controller"
+)
+
+func UpdateRoutes(router *gin.Engine) {
+	controller := controller.UpdateController{}
+	router.PUT("/update/:id", controller.UpdateUser)
+}
+>>>>>>> e6b002ebf0161aa606a31e93b52720ae9ae4adad
