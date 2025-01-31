@@ -1,14 +1,26 @@
-# Build Stage
-FROM golang:1.20 as builder
-WORKDIR /app
-COPY . .
-RUN go mod tidy
-RUN go build -o registerUser main.go
+# Etapa de construcción
+FROM golang:1.21-alpine AS builder
 
-# Run Stage
-FROM ubuntu:20.04
+# Establecer el directorio de trabajo
 WORKDIR /app
-COPY --from=builder /app/registerUser .
-COPY --from=builder /app/.env .
+
+# Copiar los archivos del proyecto
+COPY . .
+
+# Descargar las dependencias y compilar el binario
+RUN go mod tidy && go build -o app
+
+# Etapa final (imagen ligera)
+FROM alpine:latest
+
+# Establecer el directorio de trabajo
+WORKDIR /root/
+
+# Copiar el binario desde la imagen anterior
+COPY --from=builder /app/app .
+
+# Exponer el puerto en el que escucha la aplicación
 EXPOSE 8081
-CMD ["./registerUser"]
+
+# Ejecutar la aplicación
+CMD ["./main"]
