@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const registerRoutes = require('../RegisterBus/src/routes/registerRoutes');
+const registerRoutes = require('./src/routes/registerRoutes');
 const dotenv = require('dotenv');
 // Configuración
 dotenv.config();
