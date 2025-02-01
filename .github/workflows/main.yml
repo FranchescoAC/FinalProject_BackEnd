@@ -11,7 +11,8 @@ jobs:
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
-      dockerfile_path: BusManagement/RegisterBus/
+    variables:
+      dockerfile_path: BusManagement/RegisterBus
 
   Delete-Bus:
     uses: ./.github/workflows/login_pull.yml
@@ -19,4 +20,5 @@ jobs:
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
-      dockerfile_path: BusManagement/DeleteBus/
+    variables:
+      dockerfile_path: BusManagement/DeleteBus
