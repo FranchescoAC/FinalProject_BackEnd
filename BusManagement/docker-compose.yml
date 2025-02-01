@@ -9,10 +9,23 @@ services:
     volumes:
       - ./RegisterBus:/app
 
-
   delete-bus:
     build:
       context: ./DeleteBus
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_DELETEBUS}:latest"
+    restart: always
+
+  update-bus:
+    build:
+      context: ./UpdateBusAvailability
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_BUS_UPDATE}:latest"
+    restart: always
+
+  view-bus:
+    build:
+      context: ./ViewBusDetails
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_BUS_VIEW}:latest"
     restart: always

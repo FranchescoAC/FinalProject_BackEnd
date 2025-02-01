@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const updateRoutes = require('../UpdateBusAvailability/src/routes/updateRoutes');
+const updateRoutes = require('./src/routes/updateRoutes');
 const dotenv = require('dotenv');
 
 // Configuración
