@@ -1,0 +1,70 @@
+services:
+  # Microservicio que usa MySQL
+  bus_register:
+    build:
+      context: ./BusManagement/RegisterBus
+      dockerfile: Dockerfile
+    container_name: bus_register
+    depends_on:
+      mysql:
+        condition: service_started
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: bus_management
+    ports:
+      - "3001:3001"
+
+  bus_delete:
+    build:
+      context: ./BusManagement/DeleteBus
+      dockerfile: Dockerfile
+    container_name: bus_delete
+    depends_on:
+      mysql:
+        condition: service_started
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: bus_management
+    ports:
+      - "3000:3000"
+
+  bus_update:
+    build:
+      context: ./BusManagement/UpdateBusAvailability
+      dockerfile: Dockerfile
+    container_name: bus_update
+    depends_on:
+      mysql:
+        condition: service_started
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: bus_management
+    ports:
+      - "3002:3002"
+
+  bus_view:
+    build:
+      context: ./BusManagement/ViewBusDetails
+      dockerfile: Dockerfile
+    container_name: bus_view
+    depends_on:
+      mysql:
+        condition: service_started
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: bus_management
+    ports:
+      - "3003:3003"
+
