@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+FROM golang:1.20
+WORKDIR /app
+COPY . .
+RUN go mod tidy
+RUN go build -o main .
+CMD ["./main"]
+=======
 # Etapa de construcción
 FROM golang:1.21-alpine AS builder
 
@@ -24,3 +32,4 @@ EXPOSE 8083
 
 # Ejecutar la aplicación
 CMD ["./main"]
+>>>>>>> e6b002ebf0161aa606a31e93b52720ae9ae4adad

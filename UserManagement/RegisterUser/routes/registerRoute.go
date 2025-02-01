@@ -2,6 +2,23 @@ package routes
 
 import (
 	"net/http"
+<<<<<<< HEAD
+	"github.com/gorilla/mux"
+	"registerUser/controller"
+	"github.com/rs/cors"
+)
+
+func RegisterRoutes() {
+	r := mux.NewRouter()
+	r.HandleFunc("/register", controller.RegisterUser).Methods("POST")
+
+	// Enable CORS for all routes
+	handler := cors.Default().Handler(r)
+
+	// Start the server
+	http.Handle("/", handler)
+	http.ListenAndServe(":8081", nil)
+=======
 	"registerUser/controller"
 	"registerUser/utils"
 )
@@ -45,4 +62,5 @@ func RegisterRoutes() {
 		// Si el token es válido, proceder a eliminar el usuario
 		controller.DeleteUser(w, r)
 	})
+>>>>>>> e6b002ebf0161aa606a31e93b52720ae9ae4adad
 }

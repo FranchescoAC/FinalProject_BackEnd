@@ -9,3 +9,5 @@ func LoginRoutes(router *gin.Engine) {
 	controller := controller.LoginController{}
 	router.POST("/login", controller.LoginUser)
 }
+
+

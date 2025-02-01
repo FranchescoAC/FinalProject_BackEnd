@@ -1,16 +1,23 @@
 package routes
 
 import (
-	"ViewUser/controller"
 	"github.com/gin-gonic/gin"
+	"ViewUser/controller"
+	"github.com/rs/cors"
 )
 
 func ViewRoutes(router *gin.Engine) {
 	viewController := controller.ViewController{}
 
-	// Ruta para obtener todos los usuarios
+	// Route to get all users
 	router.GET("/users", viewController.GetAllUsers)
 
-	// Ruta existente para obtener un usuario por ID
+	// Route to get a user by ID
 	router.GET("/users/:id", viewController.GetUser)
+
+	// Enable CORS for all routes
+	handler := cors.Default().Handler(router)
+
+	// Start the server
+	router.Run(":8083")
 }
