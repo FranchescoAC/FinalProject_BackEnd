@@ -1,0 +1,34 @@
+name: Login to docker hub and push new image version 
+
+on:
+  workflow_call:
+    secrets:
+      docker_username:
+        required: true
+      docker_password:
+        required: true
+      repository_name:
+        required: true
+      dockerfile_path:
+        required: true
+
+jobs:
+  login_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and push Docker image
+        run: |
+
+          echo ${{ secrets.docker_password }} | docker login -u ${{ secrets.docker_username }} --password-stdin
+          REPO_NAME="${{ secrets.repository_name }}"
+          echo "Repo name: $REPO_NAME"
+          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+            echo "ERROR: Invalid repository name."
+            exit 1
+          fi
+          DOCKERFILE_PATH= "dockerfile_path/Dockerfile"
+          CONTEXT_PATH="dockerfile_path"
+          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.docker_username }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
