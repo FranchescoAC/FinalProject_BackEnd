@@ -8,13 +8,13 @@ import (
 )
 
 func main() {
-	// Crear el router
+	// Crear un router
 	r := mux.NewRouter()
 
 	// Configurar las rutas
 	routes.SetRoutes(r)
 
-	// Iniciar el servidor en el puerto 2004
-	log.Println("Servidor corriendo en http://localhost:2004")
-	log.Fatal(http.ListenAndServe(":2004", r))
+	// Iniciar el servidor en el puerto 2002
+	log.Println("Servidor corriendo en http://localhost:2002")
+	log.Fatal(http.ListenAndServe(":2002", r))
 }

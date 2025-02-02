@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
-	"DeleteUser/controller"
+	"userManagement/controller"
+	"github.com/gorilla/mux"
 )
 
-func DeleteRoutes(router *gin.Engine) {
-	controller := controller.DeleteController{}
-	router.DELETE("/delete/:id", controller.DeleteUser)
+// SetRoutes - Configuración de rutas para DeleteUser
+func SetRoutes(r *mux.Router) {
+	r.HandleFunc("/deleteUser", controller.DeleteUser).Methods("DELETE")
 }

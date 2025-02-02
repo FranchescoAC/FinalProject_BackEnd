@@ -1,17 +1,20 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"UpdateUser/config"
-	"UpdateUser/routes"
+	"log"
+	"net/http"
+	"userManagement/routes"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	config.InitDB()
-	defer config.GetDB().Close()
+	// Crear el router
+	r := mux.NewRouter()
 
-	r := gin.Default()
-	routes.UpdateRoutes(r)
+	// Configurar las rutas
+	routes.SetRoutes(r)
 
-	r.Run(":8084")
+	// Iniciar el servidor en el puerto 2003
+	log.Println("Servidor corriendo en http://localhost:2003")
+	log.Fatal(http.ListenAndServe(":2003", r))
 }
