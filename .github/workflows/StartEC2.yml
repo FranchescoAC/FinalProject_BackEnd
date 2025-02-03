@@ -18,15 +18,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Create private key file
+    - name: Crear archivo de clave privada
       run: |
         echo "${{ secrets.ec2_key }}" > private_key.pem
         chmod 600 private_key.pem
+        ls -l private_key.pem 
 
-    - name: Copy files to EC2 using SCP
-      working-directory: BusManagement/
+    - name: Copy files a EC2 usando rsync
       run: |
-        scp -o StrictHostKeyChecking=no -i private_key.pem -r * ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/BusManagement/
+        rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" ./ ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/BusManagement/
 
     - name: SSH into EC2 and Deploy Application
       run: |
