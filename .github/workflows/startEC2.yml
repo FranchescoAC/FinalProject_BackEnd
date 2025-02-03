@@ -14,7 +14,6 @@ jobs:
   connect_update:
     runs-on: ubuntu-latest
     steps:
-    
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -33,7 +32,7 @@ jobs:
       run: rm -f private_key.pem
 
     - name: SSH into EC2 and Deploy Application
-      uses: appleboy/ssh-action@v1.2.0
+      uses: appleboy/ssh-action@v1.4.0
       with:
         host: ${{ secrets.ec2_host }}
         username: ubuntu
