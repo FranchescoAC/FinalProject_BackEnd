@@ -5,7 +5,7 @@ on:
     branches: ["dev"]
 
 jobs:
-  Deploy-Docker-Compose:
+  Deploy-Docker-Compose-BusMangement:
     uses: ./.github/workflows/login_pull.yml
     secrets:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
@@ -14,3 +14,11 @@ jobs:
       repository_name_deletebus: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
       repository_name_update_bus: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}
       repository_name_view_bus: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_VIEW }}
+
+ssh-connect-ec2-QA01:
+    needs: Deploy-Docker-Compose-BusMangement
+    uses: ./.github/workflows/setup_docker.yml
+    secrets:
+      ec2_host: ${{ secrets.EC2_HOST_APPTEST }}
+      ec2_key: ${{ secrets.EC2_KEY_APPTEST }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
