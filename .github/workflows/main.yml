@@ -5,20 +5,12 @@ on:
     branches: ["dev"]
 
 jobs:
-  Register-Bus:
+  Deploy-Docker-Compose:
     uses: ./.github/workflows/login_pull.yml
-    with:
-      dockerfile_path: BusManagement/RegisterBus
     secrets:
-      docker_password: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
-      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
-
-  Delete-Bus:
-    uses: ./.github/workflows/login_pull.yml
-    with:
-      dockerfile_path: BusManagement/DeleteBus
-    secrets:
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
-      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
+      repository_name_registerbus: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
+      repository_name_deletebus: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
+      repository_name_update_bus: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}
+      repository_name_view_bus: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_VIEW }}

@@ -1,4 +1,4 @@
-name: Login to docker hub and push new image version 
+name: Login to Docker Hub and push new image version
 
 on:
   workflow_call:
@@ -7,13 +7,14 @@ on:
         required: true
       docker_password:
         required: true
-      repository_name:
+      repository_name_registerbus:
         required: true
-    inputs:
-      dockerfile_path:
-        description: "Path to the Dockerfile"
+      repository_name_deletebus:
         required: true
-        type: string
+      repository_name_update_bus:
+        required: true
+      repository_name_view_bus:
+        required: true
 
 jobs:
   login_push:
@@ -22,16 +23,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build and push Docker image
+      - name: Log in to Docker Hub
         run: |
+          echo "${{ secrets.docker_password }}" | docker login -u "${{ secrets.docker_username }}" --password-stdin
 
-          echo ${{ secrets.docker_password }} | docker login -u ${{ secrets.docker_username }} --password-stdin
-          REPO_NAME="${{ secrets.repository_name }}"
-          echo "Repo name: $REPO_NAME"
-          if [[ ! "$REPO_NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
-            echo "ERROR: Invalid repository name."
-            exit 1
-          fi
-          DOCKERFILE_PATH="./${{ inputs.dockerfile_path }}/Dockerfile"
-          CONTEXT_PATH="./${{ inputs.dockerfile_path }}"
-          docker buildx build --platform linux/amd64 --build-arg BUILDKIT_INLINE_CACHE=1 -f "$DOCKERFILE_PATH" -t ${{ secrets.docker_username }}/$REPO_NAME:latest "$CONTEXT_PATH" --push
+      - name: Build and push images with Docker Compose
+        run: |
+          export DOCKER_USERNAME="${{ secrets.docker_username }}"
+          export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.repository_name_registerbus }}"
+          export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.repository_name_deletebus }}"
+          export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
+          export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.repository_name_view_bus }}"
+          
+          
+          docker-compose build
+          docker-compose push
