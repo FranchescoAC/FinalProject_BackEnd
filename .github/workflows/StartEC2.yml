@@ -24,8 +24,7 @@ jobs:
 
       - name: Copy files to EC2 using rsync
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" ./ ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/mi_proyecto/ # Ajusta la ruta si es diferente
-
+         rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" BusManagement/ ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/BusManagement/
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
@@ -42,10 +41,7 @@ jobs:
             fi
 
             # Navigate to project directory
-            cd /home/ubuntu/mi_proyecto/BusManagement # Ajusta la ruta si es diferente
-
-            # Crear archivo .env (si es necesario)
-            echo "VAR1=valor1" > .env  # Reemplaza con tus variables de entorno
+            cd /home/ubuntu/BusManagement # Ajusta la ruta si es diferente
 
             # Pull images, stop old containers, and start new ones (combined)
             sudo docker compose pull
