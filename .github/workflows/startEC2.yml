@@ -24,29 +24,30 @@ jobs:
       - name: Copy files to EC2 using rsync
         run: |
           rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" . ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/
-
+                
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << 'EOF'
-            # Instala Docker y Docker Compose (mejorado)
+            # Instala Docker si no está instalado
             if ! command -v docker &> /dev/null; then
               sudo apt update
-              sudo apt install -y docker.io docker-compose-plugin
+              sudo apt install -y docker.io
               sudo systemctl enable docker
               sudo usermod -aG docker ubuntu
-              newgrp docker
-            elif ! command -v docker compose &> /dev/null; then
-              sudo apt update
-              sudo apt install -y docker-compose-plugin
             fi
+
+            # Instala Docker Compose correctamente en Ubuntu 24.04
+            if ! command -v docker-compose &> /dev/null; then
+              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            fi
+
+            # Verifica la instalación
+            docker-compose --version
 
             cd /home/ubuntu/
 
-            sudo docker compose pull
-            sudo docker compose down || true
-            sudo docker compose up -d --build
+            sudo docker-compose pull
+            sudo docker-compose down || true
+            sudo docker-compose up -d --build
           EOF
-
-      - name: Cleanup private key file
-        if: always()
-        run: rm -f private_key.pem
