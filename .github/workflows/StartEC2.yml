@@ -30,7 +30,7 @@ jobs:
 
     - name: SSH into EC2 and Deploy Application
       run: |
-        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << 'EOF'
+        ssh -t -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << 'EOF'
           # Verificar e instalar Docker
           if ! command -v docker &> /dev/null; then
             sudo apt update
