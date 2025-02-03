@@ -33,7 +33,7 @@ jobs:
     - name: Cleanup private key file
       run: rm -f private_key.pem
 
-    - name: SSH into EC2 and Deploy Application
+    - name: SSH into EC2 and Deployig Application
       uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.ec2_host }}
