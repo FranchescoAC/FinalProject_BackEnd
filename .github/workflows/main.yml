@@ -15,8 +15,9 @@ jobs:
       repository_name_update_bus: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}
       repository_name_view_bus: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_VIEW }}
 
-  ssh-connect-ec2:
+  ec2-cd-userdomain:
     needs: Deploy-Docker-Compose-BusMangement
+    if: always()
     uses: ./.github/workflows/StartEC2.yml
     secrets:
       ec2_host: ${{ secrets.EC2_HOST_BUS_MANAGEMENT }}
