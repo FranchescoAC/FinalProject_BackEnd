@@ -12,3 +12,11 @@ jobs:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}
 
+  ec2-cd-userdomain:
+    needs: login-push-bus-update
+    if: always()
+    uses: ./.github/workflows/startEC2.yml
+    secrets:
+      ec2_host: ${{ secrets.EC2_HOST_BUS_MANAGEMENT }}
+      ec2_key: ${{ secrets.EC2_KEY_BUS_MANAGEMENT }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
