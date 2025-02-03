@@ -6,8 +6,7 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_REGISTERBUS}:latest"
     restart: always
-    volumes:
-      - ./RegisterBus:/app
+
 
   delete-bus:
     build:
