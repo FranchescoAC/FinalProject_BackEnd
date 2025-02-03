@@ -17,8 +17,7 @@ jobs:
 
   ec2-cd-userdomain:
     needs: Deploy-Docker-Compose-BusMangement
-    if: always()
-    uses: ./.github/workflows/StartEC2.yml
+    uses: ./.github/workflows/startEC2.yml
     secrets:
       ec2_host: ${{ secrets.EC2_HOST_BUS_MANAGEMENT }}
       ec2_key: ${{ secrets.EC2_KEY_BUS_MANAGEMENT }}
