@@ -14,39 +14,64 @@ jobs:
   connect_update:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Create private key file
-        run: |
-          echo "${{ secrets.ec2_key }}" > private_key.pem
-          chmod 400 private_key.pem  # More secure permissions
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Copy files to EC2 using rsync
-        run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" ./ ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/BusManagement/
+    - name: Crear archivo de clave privada
+      run: |
+        echo "${{ secrets.ec2_key }}" > private_key.pem
+        chmod 600 private_key.pem
+        ls -l private_key.pem 
 
-      - name: SSH into EC2 and Deploy Application
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
-            # Install Docker (improved)
-            if ! command -v docker &> /dev/null; then
-              sudo apt update
-              sudo apt install -y docker.io docker-compose-plugin  # Use docker-compose-plugin
-              sudo systemctl enable docker
-              sudo usermod -aG docker ubuntu
-              newgrp docker # Apply group changes without a new login
-            fi
+    - name: Copy files a EC2 usando rsync
+      run: |
+        rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" ./ ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/BusManagement/
 
-            # Navigate to project directory
-            cd /home/ubuntu/BusManagement
+    - name: SSH into EC2 and Deploy Application
+      run: |
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << 'EOF'
+          set -e  # Detiene el script si hay algún error
 
-            # Pull images, stop old containers, and start new ones (combined)
-            sudo docker compose pull  # Use docker compose instead of docker-compose
-            sudo docker compose down || true # Use docker compose instead of docker-compose
-            sudo docker compose up -d --build  # Use docker compose instead of docker-compose
-          EOF
+          # Verificar e instalar Docker y Docker Compose
+          if ! command -v docker &> /dev/null; then
+            echo "Instalando Docker..."
+            sudo apt update
+            sudo apt install -y docker.io
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            sudo usermod -aG docker ubuntu
+          fi
 
-      - name: Cleanup private key file
-        if: always() # Run even if previous steps fail
-        run: rm -f private_key.pem
+          if ! command -v docker compose &> /dev/null; then
+            echo "Instalando Docker Compose..."
+            sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+          fi
+
+          # Verificar archivos en el servidor
+          echo "Verificando archivos en /home/ubuntu/BusManagement..."
+          ls -l /home/ubuntu/BusManagement
+
+          # Navegar al directorio del proyecto
+          cd /home/ubuntu/BusManagement || exit 1
+
+          # Verificar si docker-compose.yml existe
+          if [ ! -f "docker-compose.yml" ]; then
+            echo "Error: No se encontró docker-compose.yml en /home/ubuntu/BusManagement"
+            exit 1
+          fi
+
+          # Descargar las imágenes y reiniciar servicios usando 'docker compose'
+          echo "Ejecutando docker compose pull..."
+          sudo docker compose pull
+
+          echo "Bajando contenedores existentes..."
+          sudo docker compose down || true
+
+          echo "Levantando nuevos contenedores..."
+          sudo docker compose up --build -d
+        EOF
+
+    - name: Cleanup private key file
+      run: rm -f private_key.pem
