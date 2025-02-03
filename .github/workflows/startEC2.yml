@@ -1,4 +1,3 @@
-
 name: Docker Setup & Update & Run new images
 
 on:
@@ -15,51 +14,38 @@ jobs:
   connect_update:
     runs-on: ubuntu-latest
     steps:
-    
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Create private key file
-      working-directory: BusManagement
-      run: |
-        echo "${{ secrets.ec2_key }}" > private_key.pem
-        chmod 600 private_key.pem
+      - name: Create private key file
+        run: |
+          echo "${{ secrets.ec2_key }}" > private_key.pem
+          chmod 400 private_key.pem  # Permiso más seguro
 
-    - name: Copy docker-compose.yml to EC2 using SCP
-      working-directory: BusManagement
-      run: |
-        scp -o StrictHostKeyChecking=no -i private_key.pem docker-compose.yml ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/
+      - name: Copy files to EC2 using rsync
+        run: |
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" . ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/  # Copia todo el repo
 
-    - name: Cleanup private key file
-      run: rm -f private_key.pem
+      - name: SSH into EC2 and Deploy Application
+        uses: actions/ssh@v1 # Acción oficial de GitHub
+        with:
+          host: ${{ secrets.ec2_host }}
+          username: ubuntu
+          key: ${{ secrets.ec2_key }}
+          script: |
+            # Instala Docker y Docker Compose (mejorado)
+            if ! command -v docker &> /dev/null; then
+              sudo apt update
+              sudo apt install -y docker.io docker-compose-plugin
+              sudo systemctl enable docker
+              sudo usermod -aG docker ubuntu
+              newgrp docker
+            elif ! command -v docker compose &> /dev/null; then # Verifica solo docker compose
+              sudo apt update
+              sudo apt install -y docker-compose-plugin
+            fi
 
-    - name: SSH into EC2 and Deployig Application
-      uses: appleboy/ghaction-ssh@v1.4.0
-      with:
-        host: ${{ secrets.ec2_host }}
-        username: ubuntu
-        key: ${{ secrets.ec2_key }}
-        script: |
-          if ! command -v docker &> /dev/null; then
-            sudo apt update
-            sudo apt install -y docker.io
-            sudo systemctl start docker
-            sudo systemctl enable docker
-            sudo usermod -aG docker $USER
-            sudo systemctl restart docker
-            sudo apt install docker-compose -y
-          else
-            echo "Docker ya está instalado."
-          fi
+            cd /home/ubuntu/  # Navega al directorio del proyecto (donde está docker-compose.yml)
 
-          if ! sudo systemctl is-active --quiet docker; then
-            sudo systemctl start docker
-          fi  
-
-          cd /home/ubuntu
-
-          sudo docker-compose pull
-
-          sudo docker-compose down || true
-
-          sudo docker-compose up -d
+            sudo docker compose pull
+            sudo docker compose down || true
+            sudo docker compose up -d --build
