@@ -58,7 +58,7 @@ jobs:
 
           # Verificar si docker-compose.yml existe
           if [ ! -f "docker-compose.yml" ]; then
-            echo "Error: No se encontró docker-compose.yml en /home/ubuntu/BusManagement"
+            echo "Error: No se encontró docker-compose.yml en /home/ubuntu/"
             exit 1
           fi
 
