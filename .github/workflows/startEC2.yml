@@ -26,7 +26,7 @@ jobs:
           rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" . ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/  # Copia todo el repo
 
       - name: SSH into EC2 and Deploying Application
-        uses: actions/ssh@v1 # Acción oficial de GitHub
+        uses: appleboy/ssh-action@v1.2.0 # Acción oficial de GitHub
         with:
           host: ${{ secrets.ec2_host }}
           username: ubuntu
