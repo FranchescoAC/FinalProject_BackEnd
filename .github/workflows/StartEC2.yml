@@ -24,7 +24,7 @@ jobs:
 
       - name: Copy files to EC2 using rsync
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" ./ ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/ 
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" ./ ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/BusManagement
 
       - name: SSH into EC2 and Deploy Application
         run: |
