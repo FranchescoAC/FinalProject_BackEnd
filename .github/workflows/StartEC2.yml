@@ -29,41 +29,26 @@ jobs:
         scp -o StrictHostKeyChecking=no -i private_key.pem -r * ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/BusManagement/
 
     - name: SSH into EC2 and Deploy Application
-      uses: appleboy/ssh-action@v1.2.0
-      with:
-        host: ${{ secrets.ec2_host }}
-        username: ubuntu
-        key: ${{ secrets.ec2_key }}
-        script: |
-          # Verificar e instalar Docker y Docker Compose
+      run: |
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << 'EOF'
+          # Verificar e instalar Docker
           if ! command -v docker &> /dev/null; then
             sudo apt update
-            sudo apt install -y docker.io
-            sudo apt install docker-compose -y
+            sudo apt install -y docker.io docker-compose
             sudo systemctl start docker
             sudo systemctl enable docker
             sudo usermod -aG docker ubuntu
             exec su -l ubuntu
-          else
-            echo "Docker ya está instalado."
           fi
-
-          # Asegurar que Docker esté activo
-          if ! sudo systemctl is-active --quiet docker; then
-            sudo systemctl start docker
-          fi  
 
           # Navegar al directorio del proyecto
           cd /home/ubuntu/BusManagement
 
-          # Descargar las imágenes más recientes
+          # Descargar las imágenes y reiniciar servicios
           sudo docker-compose pull
-
-          # Detener y eliminar contenedores en ejecución
           sudo docker-compose down || true
-
-          # Reconstruir y desplegar los servicios
           sudo docker-compose up --build -d
+        EOF
 
     - name: Cleanup private key file
       run: rm -f private_key.pem
