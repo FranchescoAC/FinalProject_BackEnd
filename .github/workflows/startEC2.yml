@@ -34,7 +34,7 @@ jobs:
       run: rm -f private_key.pem
 
     - name: SSH into EC2 and Deployig Application
-      uses: appleboy/ssh-action@v1.2.0
+      uses: appleboy/ghaction-ssh@v1.4.0
       with:
         host: ${{ secrets.ec2_host }}
         username: ubuntu
