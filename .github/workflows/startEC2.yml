@@ -19,14 +19,14 @@ jobs:
       - name: Create private key file
         run: |
           echo "${{ secrets.ec2_key }}" > private_key.pem
-          chmod 400 private_key.pem  # Permiso más seguro
+          chmod 400 private_key.pem
 
       - name: Copy files to EC2 using rsync
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" . ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/  # Copia todo el repo
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" . ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/
 
       - name: SSH into EC2 and Deploy Application
-        uses: actions/ssh@v1  # Acción oficial de GitHub
+        uses: actions/ssh@v1  # Especifica la versión completa
         with:
           host: ${{ secrets.ec2_host }}
           username: ubuntu
@@ -35,17 +35,21 @@ jobs:
             # Instala Docker y Docker Compose (mejorado)
             if ! command -v docker &> /dev/null; then
               sudo apt update
-              sudo apt install -y docker.io docker-compose-plugin  # Instala el plugin docker-compose
+              sudo apt install -y docker.io docker-compose-plugin
               sudo systemctl enable docker
               sudo usermod -aG docker ubuntu
-              newgrp docker  # Aplica los cambios de grupo
-            elif ! command -v docker compose &> /dev/null; then # Verifica si docker compose está instalado
+              newgrp docker
+            elif ! command -v docker compose &> /dev/null; then
               sudo apt update
               sudo apt install -y docker-compose-plugin
             fi
 
-            cd /home/ubuntu/  # Navega al directorio del proyecto (donde está docker-compose.yml)
+            cd /home/ubuntu/
 
             sudo docker compose pull
             sudo docker compose down || true
             sudo docker compose up -d --build
+
+      - name: Cleanup private key file
+        if: always()
+        run: rm -f private_key.pem
