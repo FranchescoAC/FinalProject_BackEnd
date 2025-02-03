@@ -24,8 +24,8 @@ jobs:
       - name: Copy files to EC2 using rsync
         run: |
           rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" . ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/
-          
-      - name: SSH into EC2 and Deploy Application
+
+      - name: SSH into EC2 and Deploying Application
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.ec2_host }}
