@@ -12,7 +12,7 @@ jobs:
     uses: ./.github/workflows/login_pull.yml
 
   ssh-connect-ec2-BusMangement:
-      needs: Deploy-Docker-Compose-BusMangement
+      needs: Deploy-Docker-Compose-Bus-Mangement
       uses: ./.github/workflows/startEC2.yml
       secrets:
         ec2_host: ${{ secrets.EC2_HOST_BUS_MANAGEMENT }}
