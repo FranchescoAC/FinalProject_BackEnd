@@ -15,12 +15,6 @@ on:
         required: true
       repository_name_view_bus:
         required: true
-      repository_name_notification_create:
-        required: true
-      repository_name_notification_delete:
-        required: true
-      repository_name_notification_view:
-        required: true
 
 jobs:
   login_push:
