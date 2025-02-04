@@ -5,15 +5,11 @@ on:
     branches: ["dev"]
 
 jobs:
-  Deploy-Docker-Compose-BusMangement:
+  Deploy-Docker-Compose-Bus-Mangement:
     uses: ./.github/workflows/login_pull.yml
-    secrets:
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
-      docker_password: ${{ secrets.DOCKER_PASSWORD }}
-      repository_name_registerbus: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
-      repository_name_deletebus: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
-      repository_name_update_bus: ${{ secrets.DOCKER_REPOSITORY_NA  ME_BUS_UPDATE }}
-      repository_name_view_bus: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_VIEW }}
+
+  Deploy-Docker-Compose-Notification-Management:
+    uses: ./.github/workflows/login_pull.yml
 
   ssh-connect-ec2-BusMangement:
       needs: Deploy-Docker-Compose-BusMangement
