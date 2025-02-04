@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/login_pull.yml
     secrets: inherit
 
-  ssh-connect-ec2-Bus-Mangement:
+  ssh-connect-ec2-Bus-Management:
       needs: Deploy-Docker-Compose-Bus-Mangement
       uses: ./.github/workflows/startEC2.yml
       secrets:
