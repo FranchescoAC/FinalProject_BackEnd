@@ -2,6 +2,25 @@ name: Login to Docker Hub and push new image version
 
 on:
   workflow_call:
+    secrets:
+      docker_username:
+        required: true
+      docker_password:
+        required: true
+      repository_name_registerbus:
+        required: true
+      repository_name_deletebus:
+        required: true
+      repository_name_update_bus:
+        required: true
+      repository_name_view_bus:
+        required: true
+      repository_name_notification_create:
+        required: true
+      repository_name_notification_delete:
+        required: true
+      repository_name_notification_view:
+        required: true
 
 jobs:
   login_push:
@@ -17,18 +36,19 @@ jobs:
 
       - name: Log in to Docker Hub
         run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          echo "${{ secrets.docker_password }}" | docker login -u "${{ secrets.docker_username }}" --password-stdin
 
       - name: Build and push images with Docker Compose
         run: |
-          export DOCKER_USERNAME="${{ secrets.DOCKER_USERNAME }}"
-          export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}"
-          export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}"
-          export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}"
-          export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.DOCKER_REPOSITORY_NAME_BUS_VIEW }}"
-          export DOCKER_REPOSITORY_NAME_NOTIFICATION_CREATE="${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_CREATE }}"
-          export DOCKER_REPOSITORY_NAME_NOTIFICATION_DELETE="${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_DELETE }}"
-          export DOCKER_REPOSITORY_NAME_NOTIFICATION_VIEW="${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_VIEW }}"
+          export DOCKER_USERNAME="${{ secrets.docker_username }}"
+          export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.repository_name_registerbus }}"
+          export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.repository_name_deletebus }}"
+          export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
+          export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.repository_name_view_bus }}"
+
+          export DOCKER_REPOSITORY_NAME_NOTIFICATION_CREATE="${{ secrets.repository_name_notification_create }}"
+          export DOCKER_REPOSITORY_NAME_NOTIFICATION_DELETE="${{ secrets.repository_name_notification_delete }}"
+          export DOCKER_REPOSITORY_NAME_NOTIFICATION_VIEW="${{ secrets.repository_name_notification_view }}"
 
           docker-compose -f ./BusManagement/docker-compose.yml build
           docker-compose -f ./BusManagement/docker-compose.yml push
