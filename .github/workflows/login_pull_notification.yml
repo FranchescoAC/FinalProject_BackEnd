@@ -7,14 +7,6 @@ on:
         required: true
       docker_password:
         required: true
-      repository_name_registerbus:
-        required: true
-      repository_name_deletebus:
-        required: true
-      repository_name_update_bus:
-        required: true
-      repository_name_view_bus:
-        required: true
       repository_name_notification_create:
         required: true
       repository_name_notification_delete:
@@ -41,10 +33,6 @@ jobs:
       - name: Build and push images with Docker Compose
         run: |
           export DOCKER_USERNAME="${{ secrets.docker_username }}"
-          export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.repository_name_registerbus }}"
-          export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.repository_name_deletebus }}"
-          export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
-          export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.repository_name_view_bus }}"
 
           export DOCKER_REPOSITORY_NAME_NOTIFICATION_CREATE="${{ secrets.repository_name_notification_create }}"
           export DOCKER_REPOSITORY_NAME_NOTIFICATION_DELETE="${{ secrets.repository_name_notification_delete }}"
