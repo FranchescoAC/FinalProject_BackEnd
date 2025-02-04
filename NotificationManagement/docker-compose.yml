@@ -1,0 +1,21 @@
+services:
+  create-notifications:
+    build:
+      context: ./CreateNotifications
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_NOTIFICATION_CREATE}:latest"
+    restart: always
+
+  delete-notifications:
+    build:
+      context: ./DeleteNotifications
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_NOTIFICATION_DELETE}:latest"
+    restart: always
+
+  view-notifications:
+    build:
+      context: ./ViewNotifications
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_NOTIFICATION_VIEW}:latest"
+    restart: always
