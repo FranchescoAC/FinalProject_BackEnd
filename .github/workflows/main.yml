@@ -5,11 +5,13 @@ on:
     branches: ["dev"]
 
 jobs:
-  Deploy-Docker-Compose-Bus-Mangement:
+  Deploy-Docker-Compose-Bus-Management:
     uses: ./.github/workflows/login_pull.yml
+    secrets: inherit
 
   Deploy-Docker-Compose-Notification-Management:
     uses: ./.github/workflows/login_pull.yml
+    secrets: inherit
 
   ssh-connect-ec2-BusMangement:
       needs: Deploy-Docker-Compose-Bus-Mangement
