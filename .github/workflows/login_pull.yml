@@ -2,11 +2,6 @@ name: Login to Docker Hub and push new image version
 
 on:
   workflow_call:
-    inputs:
-      docker_compose_path:
-        description: "Path to the docker-compose.yml file"
-        required: true
-        type: string
     secrets:
       docker_username:
         required: true
