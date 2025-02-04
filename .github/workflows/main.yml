@@ -1,20 +1,22 @@
-name: Registry image
+name: EC2 deploy from docker
 
 on:
   push:
     branches: ["dev"]
 
 jobs:
-  login-push-bus-update:
+  Deploy-Docker-Compose-BusMangement:
     uses: ./.github/workflows/login_pull.yml
     secrets:
-      docker_password: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
-      repository_name: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      repository_name_registerbus: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
+      repository_name_deletebus: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}
+      repository_name_update_bus: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_UPDATE }}
+      repository_name_view_bus: ${{ secrets.DOCKER_REPOSITORY_NAME_BUS_VIEW }}
 
-  ec2-cd-busmanagementdomain:
-    needs: login-push-bus-update
-    if: always()
+ssh-connect-ec2-QA01:
+    needs: Deploy-Docker-Compose-BusMangement
     uses: ./.github/workflows/startEC2.yml
     secrets:
       ec2_host: ${{ secrets.EC2_HOST_BUS_MANAGEMENT }}
