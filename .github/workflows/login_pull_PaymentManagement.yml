@@ -14,7 +14,7 @@ on:
       repository_name_register_payment:
         required: true
       repository_name_update_payment:
-        required: trueS
+        required: true
 
 jobs:
   login_push:
