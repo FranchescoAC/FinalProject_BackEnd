@@ -7,16 +7,19 @@ WORKDIR /app
 # Copiar los archivos go.mod y go.sum para instalar las dependencias
 COPY go.mod go.sum ./
 
-# Descargar las dependencias
-RUN go mod tidy
+# Descargar todas las dependencias especificadas en go.mod
+RUN go mod download
 
 # Copiar todo el código fuente del proyecto al contenedor
 COPY . .
 
+# Descargar las dependencias adicionales y limpiar el módulo (si es necesario)
+RUN go mod tidy
+
 # Compilar la aplicación Go
 RUN go build -o main .
 
-# Exponer el puerto en el que la aplicación estará escuchando (puedes cambiar el puerto si es necesario)
+# Exponer el puerto en el que la aplicación estará escuchando
 EXPOSE 2004
 
 # Ejecutar la aplicación cuando el contenedor inicie
