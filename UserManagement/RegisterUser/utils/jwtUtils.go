@@ -3,7 +3,7 @@ package utils
 import (
 	"time"
 	"github.com/dgrijalva/jwt-go"
-	"registerUser/model"
+	"userManagement/model"
 	"os"
 )
 
