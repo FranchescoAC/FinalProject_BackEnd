@@ -1,0 +1,44 @@
+name: Login to Docker Hub and push new image version
+
+on:
+  workflow_call:
+    secrets:
+      docker_username:
+        required: true
+      docker_password:
+        required: true
+      repository_name_delete_route:
+        required: true
+      repository_name_list_route:
+        required: true
+      repository_name_register_route:
+        required: true
+      repository_name_update_route:
+        required: true
+
+jobs:
+  login_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.docker_password }}" | docker login -u "${{ secrets.docker_username }}" --password-stdin
+
+      - name: Build and push images with Docker Compose
+        run: |
+          export DOCKER_USERNAME="${{ secrets.docker_username }}"
+          export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.repository_name_registerbus }}"
+          export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.repository_name_deletebus }}"
+          export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
+          export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.repository_name_view_bus }}"
+
+          docker-compose -f ./BusManagement/docker-compose.yml build
+          docker-compose -f ./BusManagement/docker-compose.yml push

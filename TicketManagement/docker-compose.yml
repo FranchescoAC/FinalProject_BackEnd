@@ -1,0 +1,35 @@
+services:
+  delete-ticket:
+    build:
+      context: ./DeleteTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_DELETE}:latest"
+    restart: always
+
+  availability-ticket:
+    build:
+      context: ./AvailabilityTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_AVAILABILITY}:latest"
+    restart: always
+
+  register-ticket:
+    build:
+      context: ./RegisterTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_REGISTER}:latest"
+    restart: always
+
+  update-ticket:
+    build:
+      context: ./UpdateTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_UPDATE}:latest"
+    restart: always
+
+  view-ticket:
+    build:
+      context: ./ViewTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_VIEW}:latest"
+    restart: always

@@ -1,0 +1,42 @@
+services:
+  delete-user:
+    build:
+      context: ./DeleteUser
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_DELETE}:latest"
+    restart: always
+
+  list-user:
+    build:
+      context: ./ListUser
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_LIST}:latest"
+    restart: always
+
+  login-user:
+    build:
+      context: ./LoginUser
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_LOGIN}:latest"
+    restart: always
+
+  register-user:
+    build:
+      context: ./RegisterUser
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_REGISTER}:latest"
+    restart: always
+
+  update-user:
+    build:
+      context: ./UpdateUser
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_UPDATE}:latest"
+    restart: always
+
+  view-user:
+    build:
+      context: ./ViewUser
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_VIEW}:latest"
+    restart: always

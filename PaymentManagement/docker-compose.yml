@@ -1,0 +1,28 @@
+services:
+  delete-payment:
+    build:
+      context: ./DeletePayment
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_DELETE}:latest"
+    restart: always
+
+  list-payment:
+    build:
+      context: ./ListPayment
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_LIST}:latest"
+    restart: always
+
+  register-payment:
+    build:
+      context: ./RegisterPayment
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_REGISTER}:latest"
+    restart: always
+
+  update-payment:
+    build:
+      context: ./UpdatePayment
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_UPDATE}:latest"
+    restart: always
