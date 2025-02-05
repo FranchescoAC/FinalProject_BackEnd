@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"UpdateUser/controller"
+	"userManagement/controller"
 )
 
 func UpdateRoutes(router *gin.Engine) {

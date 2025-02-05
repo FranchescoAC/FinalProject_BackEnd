@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"UpdateUser/model"
+	"userManagement/model"
 )
 
 type UpdateController struct {}

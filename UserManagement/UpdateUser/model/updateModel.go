@@ -2,7 +2,7 @@ package model
 
 import (
 	"database/sql"
-	"UpdateUser/config"
+	"userManagement/config"
 )
 
 type User struct {
