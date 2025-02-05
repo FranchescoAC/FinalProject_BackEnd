@@ -3,8 +3,8 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
-	"registerUser/model"
-	"registerUser/utils"
+	"userManagement/model"
+	"userManagement/utils"
 )
 
 type RegisterRequest struct {
