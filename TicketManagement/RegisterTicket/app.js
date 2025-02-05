@@ -1,34 +1,61 @@
 const express = require('express');
-const updateRoutes = require('../UpdateTicket/src/routes/updateRoutes');
-const db = require('../RegisterTicket/src/config/db'); // Importa el módulo db
+const TicketModel = require('./src/model/registerModel'); // Importar el modelo correcto
+const db = require('./src/config/db');
 const app = express();
 const PORT = process.env.PORT || 4002;
 
 app.use(express.json());
 
-// Middleware para manejar errores globalesS
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Something went wrong!' });
-});
+// Endpoint para recibir el Webhook de RegisterUser
+app.post('/api/tickets/register-ticket', async (req, res) => {
+    const { user_id, username, email } = req.body;
 
-// Rutas
-app.use('/api/tickets', updateRoutes); // Prefijo para las rutas de tickets
+    if (!user_id || !username || !email) {
+        return res.status(400).json({ message: '❌ Datos inválidos en el Webhook' });
+    }
 
-// Manejo de la conexión a la base de datos (se elimina la prueba inicial)
-async function startServer() {
     try {
-        //const connection = await db.connect(); // Antes usabas db.connect()
-        await db.getConnection(); // Ahora usa db.getConnection()
-        console.log('Connected to MariaDB!');
-        //connection.release(); // Ya no es necesario liberar la conexión aquí
-        app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+        console.log(`📩 Webhook recibido: Usuario ${username} (${email}) con ID ${user_id} registrado.`);
+
+        // Crear un ticket con el user_id recibido
+        const ticketData = {
+            user_id: user_id,
+            bus_id: 1, // Se puede cambiar dinámicamente
+            seat_number: Math.floor(Math.random() * 50) + 1, // Número de asiento aleatorio
+            status: "reserved"
+        };
+
+        // Guardar en la base de datos
+        const ticket = await TicketModel.create(ticketData);
+
+        res.status(200).json({
+            message: `🎫 Ticket para el usuario ${username} creado exitosamente`,
+            ticket
         });
     } catch (error) {
-        console.error('Failed to connect to MariaDB:', error);
+        console.error('❌ Error procesando el Webhook:', error);
+        res.status(500).json({ message: 'Error procesando el Webhook' });
+    }
+});
+
+// Conectar a la base de datos y arrancar el servidor
+async function startServer() {
+    try {
+        await db.getConnection();
+        console.log('✅ Conectado a la base de datos.');
+        app.listen(PORT, () => {
+            console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+        });
+    } catch (error) {
+        console.error('❌ Error conectando a la base de datos:', error);
         process.exit(1);
     }
 }
+
+// Middleware para manejar errores (debe ir después de las rutas)
+app.use((err, req, res, next) => {
+    console.error('❌ Error global:', err.stack);  // Muestra el error completo en los logs
+    res.status(500).json({ message: 'Algo salió mal en el servidor. Intenta nuevamente más tarde.' });
+});
 
 startServer();
