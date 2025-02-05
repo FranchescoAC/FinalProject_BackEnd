@@ -11,6 +11,8 @@ on:
         required: true
       repository_name_delete_user:
         required: true
+      repository_name_list_user:
+        required: true
       repository_name_register_user:
         required: true
       repository_name_update_user:
@@ -38,10 +40,12 @@ jobs:
       - name: Build and push images with Docker Compose
         run: |
           export DOCKER_USERNAME="${{ secrets.docker_username }}"
-          export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.repository_name_registerbus }}"
-          export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.repository_name_deletebus }}"
-          export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
-          export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.repository_name_view_bus }}"
+          export DOCKER_REPOSITORY_NAME_USER_LOGIN="${{ secrets.repository_name_login_user }}"
+          export DOCKER_REPOSITORY_NAME_USER_DELETE="${{ secrets.repository_name_delete_user }}"
+          export DOCKER_REPOSITORY_NAME_USER_LIST="${{ secrets.repository_name_list_user }}"
+          export DOCKER_REPOSITORY_NAME_USER_REGISTER="${{ secrets.repository_name_register_user }}"
+          export DOCKER_REPOSITORY_NAME_USER_UPDATE="${{ secrets.repository_name_update_user }}"
+          export DOCKER_REPOSITORY_NAME_USER_VIEW="${{ secrets.repository_name_view_user }}"
 
-          docker-compose -f ./BusManagement/docker-compose.yml build
-          docker-compose -f ./BusManagement/docker-compose.yml push
+          docker-compose -f ./UserManagement/docker-compose.yml build
+          docker-compose -f ./UserManagement/docker-compose.yml push

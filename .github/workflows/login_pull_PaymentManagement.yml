@@ -7,14 +7,14 @@ on:
         required: true
       docker_password:
         required: true
-      repository_name_registerbus:
+      repository_name_delete_payment:
         required: true
-      repository_name_deletebus:
+      repository_name_list_payment:
         required: true
-      repository_name_update_bus:
+      repository_name_register_payment:
         required: true
-      repository_name_view_bus:
-        required: true
+      repository_name_update_payment:
+        required: trueS
 
 jobs:
   login_push:
@@ -35,10 +35,10 @@ jobs:
       - name: Build and push images with Docker Compose
         run: |
           export DOCKER_USERNAME="${{ secrets.docker_username }}"
-          export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.repository_name_registerbus }}"
-          export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.repository_name_deletebus }}"
-          export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
-          export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.repository_name_view_bus }}"
+          export DOCKER_REPOSITORY_NAME_PAYMENT_DELETE="${{ secrets.repository_name_delete_payment }}"
+          export DOCKER_REPOSITORY_NAME_PAYMENT_LIST="${{ secrets.repository_name_list_payment }}"
+          export DOCKER_REPOSITORY_NAME_PAYMENT_REGISTER="${{ secrets.repository_name_register_payment }}"
+          export DOCKER_REPOSITORY_NAME_PAYMENT_UPDATE="${{ secrets.repository_name_update_payment }}"
 
-          docker-compose -f ./BusManagement/docker-compose.yml build
-          docker-compose -f ./BusManagement/docker-compose.yml push
+          docker-compose -f ./PaymentManagement/docker-compose.yml build
+          docker-compose -f ./PaymentManagement/docker-compose.yml push
