@@ -1,7 +1,7 @@
 package model
 
 import (
-	"DeleteUser/config"
+	"userManagement/config"
 )
 
 func DeleteUserByID(id string) error {

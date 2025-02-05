@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"DeleteUser/model"
+	"userManagement/model"
 )
 
 type DeleteController struct {}
