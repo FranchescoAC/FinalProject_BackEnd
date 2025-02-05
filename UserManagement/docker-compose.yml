@@ -33,10 +33,3 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_UPDATE}:latest"
     restart: always
-
-  view-user:
-    build:
-      context: ./ViewUser
-      dockerfile: Dockerfile
-    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_VIEW}:latest"
-    restart: always
