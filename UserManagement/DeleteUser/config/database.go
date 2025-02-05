@@ -6,6 +6,8 @@ import (
 	_ "github.com/lib/pq" // Importar el driver de PostgreSQL
 )
 
+var db *sql.DB
+
 // ConnectDB - Función para establecer la conexión a la base de datos
 func ConnectDB() (*sql.DB, error) {
 	// Usa tu cadena de conexión aquí
@@ -24,4 +26,9 @@ func ConnectDB() (*sql.DB, error) {
 	}
 
 	return db, nil
+}
+
+// GetDB - Función para obtener la conexión a la base de datos
+func GetDB() (*sql.DB) {
+	return db
 }
