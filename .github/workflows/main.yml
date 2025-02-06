@@ -69,7 +69,7 @@ jobs:
 
 
   ssh-connect-ec2:
-      needs: Deploy-Docker-Compose-Bus-Mangement
+      needs: Deploy-Docker-Compose-Bus-Management
       uses: ./.github/workflows/startEC2.yml
       secrets:
         ec2_host: ${{ secrets.EC2_HOST_BUS_MANAGEMENT }}
