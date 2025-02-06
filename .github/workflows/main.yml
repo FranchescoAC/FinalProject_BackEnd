@@ -68,20 +68,12 @@ jobs:
       repository_name_view_user: ${{ secrets.DOCKER_REPOSITORY_NAME_USER_VIEW }}
 
 
-  ssh-connect-ec2-Bus-Management:
-      needs: Deploy-Docker-Compose-Bus-Management
+  ssh-connect-ec2:
+      needs: Deploy-Docker-Compose-Bus-Mangement
       uses: ./.github/workflows/startEC2.yml
       secrets:
         ec2_host: ${{ secrets.EC2_HOST_BUS_MANAGEMENT }}
         ec2_key: ${{ secrets.EC2_KEY_BUS_MANAGEMENT }}
         docker_username: ${{ secrets.DOCKER_USERNAME }}
-        domain: ${{ secrets.DOMAIN_BUS }}
 
-  ssh-connect-ec2-Notification-Management:
-      needs: Deploy-Docker-Compose-Notification-Management
-      uses: ./.github/workflows/startEC2.yml
-      secrets:
-        ec2_host: ${{ secrets.EC2_HOST_NOTIFICATION_MANAGEMENT }}
-        ec2_key: ${{ secrets.EC2_KEY_NOTIFICATION_MANAGEMENT }}
-        docker_username: ${{ secrets.DOCKER_USERNAME }}
-        domain: ${{ secrets.DOMAIN_NOTIFICATION }}
+
