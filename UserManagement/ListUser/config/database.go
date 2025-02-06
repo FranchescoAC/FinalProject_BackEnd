@@ -3,27 +3,33 @@ package config
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
+	"log"
+
+	_ "github.com/lib/pq" // Importamos el driver de PostgreSQL
 )
 
-var db *sql.DB
+const (
+	DbHost     = "userdb.ckkft1kjllti.us-east-1.rds.amazonaws.com"
+	DbPort     = 5432
+	DbUser     = "postgres"
+	DbPassword = "Baseuser0806"
+	DbName     = "UserManagement"
+)
 
-// ConnectDB - Establish a connection to the PostgreSQL database
+// Conectar a la base de datos PostgreSQL
 func ConnectDB() (*sql.DB, error) {
-	if db == nil {
-		var err error
-		connStr := "host=userdb.ckkft1kjllti.us-east-1.rds.amazonaws.com port=5432 user=postgres password=Baseuser0806 dbname=UserManagement sslmode=require"
-		db, err = sql.Open("postgres", connStr)
-		if err != nil {
-			return nil, fmt.Errorf("❌ Error connecting to the database: %v", err)
-		}
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=require", DbHost, DbPort, DbUser, DbPassword, DbName)
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		log.Fatal("❌ Error al conectar a la base de datos: ", err)
+		return nil, err
 	}
-
-	// Verify the connection
-	if err := db.Ping(); err != nil {
-		return nil, fmt.Errorf("❌ Could not establish a connection: %v", err)
+	// Probar la conexión
+	err = db.Ping()
+	if err != nil {
+		log.Fatal("❌ Error al hacer ping a la base de datos: ", err)
+		return nil, err
 	}
-
-	fmt.Println("✅ Successfully connected to the database")
+	fmt.Println("✅ Conexión exitosa a la base de datos")
 	return db, nil
 }
