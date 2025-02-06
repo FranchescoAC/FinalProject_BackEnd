@@ -31,7 +31,6 @@ jobs:
       secrets:
         ec2_host: ${{ secrets.EC2_HOST_BUS_MANAGEMENT }}
         ec2_key: ${{ secrets.EC2_KEY_BUS_MANAGEMENT }}
-        docker_username: ${{ secrets.DOCKER_USERNAME }}
         domain: ${{ secrets.DOMAIN_BUS }}
         repository_name_registerbus: ${{ secrets.DOCKER_REPOSITORY_NAME_REGISTERBUS }}
         repository_name_deletebus: ${{ secrets.DOCKER_REPOSITORY_NAME_DELETEBUS }}

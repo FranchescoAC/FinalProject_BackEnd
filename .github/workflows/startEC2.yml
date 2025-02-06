@@ -3,8 +3,7 @@ name: Start EC2 and Deploy
 on:
   workflow_call:
     secrets:
-      docker_username:
-        required: true
+
       ec2_host:
         required: true
       ec2_key:
@@ -35,7 +34,7 @@ jobs:
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
-            export DOCKER_USERNAME="${{ secrets.docker_username }}"
+            export DOCKER_USERNAME="franchescoac"
             export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.repository_name_registerbus }}"
             export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.repository_name_deletebus }}"
             export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
