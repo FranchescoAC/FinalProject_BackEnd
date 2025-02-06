@@ -9,8 +9,7 @@ on:
         required: true
       ec2_key:
         required: true
-      domain:
-        required: true  # Nuevo secreto que define el dominio
+
 
 jobs:
   connect_update:
