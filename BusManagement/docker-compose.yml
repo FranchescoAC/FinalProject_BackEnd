@@ -7,7 +7,6 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_REGISTERBUS}:latest"
     restart: always
 
-
   delete-bus:
     build:
       context: ./DeleteBus
