@@ -2,10 +2,12 @@ package routes
 
 import (
 	"userManagement/controller"
+	"userManagement/middleware"
+
 	"github.com/gorilla/mux"
 )
 
-// SetRoutes - Configuración de rutas para DeleteUser
+// SetRoutes - Configure routes for the DeleteUser service
 func SetRoutes(r *mux.Router) {
-	r.HandleFunc("/deleteUser", controller.DeleteUser).Methods("DELETE")
+	r.Handle("/deleteUser", middleware.JWTMiddleware(http.HandlerFunc(controller.DeleteUser))).Methods("DELETE")
 }

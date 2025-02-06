@@ -2,10 +2,13 @@ package routes
 
 import (
 	"userManagement/controller"
+	"userManagement/middleware"
+
 	"github.com/gorilla/mux"
 )
 
-// SetRoutes - Configuración de rutas para UpdateUser
+// SetRoutes - Configurar la ruta para actualizar usuarios
 func SetRoutes(r *mux.Router) {
-	r.HandleFunc("/updateUser", controller.UpdateUser).Methods("PUT")
+	r.Handle("/updateUser", middleware.JWTMiddleware(http.HandlerFunc(controller.UpdateUser))).Methods("PUT")
 }
+

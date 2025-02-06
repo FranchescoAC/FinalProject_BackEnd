@@ -3,36 +3,35 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
-	"userManagement/model"
 	"strconv"
+	"userManagement/model"
 )
 
-// DeleteUser - Controlador para eliminar un usuario
+// DeleteUser - Controller to delete a user by ID
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	// Obtener el ID del usuario a eliminar desde los parámetros de la URL
+	// Get the user ID from the URL query parameters
 	userIDStr := r.URL.Query().Get("id")
 	if userIDStr == "" {
-		http.Error(w, "ID del usuario es requerido", http.StatusBadRequest)
+		http.Error(w, "❌ User ID is required", http.StatusBadRequest)
 		return
 	}
 
-	// Convertir el ID de string a int
+	// Convert the user ID from string to int
 	userID, err := strconv.Atoi(userIDStr)
 	if err != nil {
-		http.Error(w, "ID inválido", http.StatusBadRequest)
+		http.Error(w, "❌ Invalid user ID", http.StatusBadRequest)
 		return
 	}
 
-	// Llamar al modelo para eliminar el usuario
-	err = model.DeleteUser(userID)
-	if err != nil {
-		http.Error(w, "Error eliminando usuario", http.StatusInternalServerError)
+	// Call the model function to delete the user
+	if err := model.DeleteUser(userID); err != nil {
+		http.Error(w, "❌ Error deleting user", http.StatusInternalServerError)
 		return
 	}
 
-	// Devolver una respuesta exitosa
+	// Respond with success
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
-		"message": "Usuario eliminado exitosamente",
+		"message": "✅ User successfully deleted",
 	})
 }

@@ -1,8 +1,8 @@
 package model
 
 import (
-	"userManagement/config" // Mantén solo la importación de config
-	_ "github.com/lib/pq"    // Importamos el driver para PostgreSQL
+	"database/sql"
+	"userManagement/config"
 )
 
 type User struct {
@@ -12,9 +12,8 @@ type User struct {
 	Password string `json:"password"`
 }
 
-// Función para obtener un usuario por correo electrónico
+// Obtener un usuario por su correo electrónico
 func GetUserByEmail(email string) (User, error) {
-	// Usamos la función ConnectDB del paquete config para obtener la conexión
 	db, err := config.ConnectDB()
 	if err != nil {
 		return User{}, err

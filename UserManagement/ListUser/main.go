@@ -4,17 +4,31 @@ import (
 	"log"
 	"net/http"
 	"userManagement/routes"
+
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
-	// Crear un router
+	// Create the router
 	r := mux.NewRouter()
 
-	// Configurar las rutas
+	// Set up the routes
 	routes.SetRoutes(r)
 
-	// Iniciar el servidor en el puerto 2002
-	log.Println("Servidor corriendo en http://localhost:2002")
-	log.Fatal(http.ListenAndServe(":2002", r))
+	// Configure CORS
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"}, // Allow all origins (you can restrict if needed)
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+		AllowCredentials: true,
+	})
+
+	// Wrap the router with CORS middleware
+	handler := corsHandler.Handler(r)
+
+	// Start the server on port 2002
+	port := ":2002"
+	log.Println("✅ ListUser service running at http://localhost" + port)
+	log.Fatal(http.ListenAndServe(port, handler))
 }

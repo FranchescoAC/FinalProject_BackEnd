@@ -3,32 +3,24 @@ package config
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq" // Importar el driver de PostgreSQL
+	_ "github.com/lib/pq" // Import PostgreSQL driver
 )
 
 var db *sql.DB
 
-// ConnectDB - Función para establecer la conexión a la base de datos
+// ConnectDB - Establish a connection to the PostgreSQL database
 func ConnectDB() (*sql.DB, error) {
-	// Usa tu cadena de conexión aquí
 	connStr := "host=userdb.ckkft1kjllti.us-east-1.rds.amazonaws.com port=5432 user=postgres password=Baseuser0806 dbname=UserManagement sslmode=require"
-	
-	// Establecer la conexión
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		return nil, fmt.Errorf("Error al conectar a la base de datos: %v", err)
+		return nil, fmt.Errorf("❌ Error connecting to the database: %v", err)
 	}
 
-	// Verificar la conexión
-	err = db.Ping()
-	if err != nil {
-		return nil, fmt.Errorf("No se pudo hacer ping a la base de datos: %v", err)
+	// Verify the connection
+	if err := db.Ping(); err != nil {
+		return nil, fmt.Errorf("❌ Could not establish a connection: %v", err)
 	}
 
+	fmt.Println("✅ Successfully connected to the database")
 	return db, nil
-}
-
-// GetDB - Función para obtener la conexión a la base de datos
-func GetDB() (*sql.DB) {
-	return db
 }

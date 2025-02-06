@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Función para registrar las rutas de LoginUser
+// Registrar la ruta del login
 func RegisterRoutes(r *mux.Router) {
 	r.HandleFunc("/login", controller.LoginUser).Methods("POST")
 }

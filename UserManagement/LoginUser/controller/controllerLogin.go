@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"net/http"
 	"userManagement/model"
-	"github.com/golang-jwt/jwt/v4"  // Asegúrate de importar jwt/v4
-	"time"
+	"userManagement/service"
 )
 
-// Función para hacer login de un usuario
+// Controlador para manejar el inicio de sesión del usuario
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	var user model.User
+
 	// Decodificar la solicitud JSON
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -25,30 +25,20 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verificar que las contraseñas coincidan
+	// Verificar que la contraseña sea válida (en producción, se debería hashear)
 	if storedUser.Password != user.Password {
 		http.Error(w, "Invalid password", http.StatusUnauthorized)
 		return
 	}
 
-	// Crear el token JWT
-	token := jwt.New(jwt.SigningMethodHS256)  // Esta línea ahora funciona bien en la versión 4.x
-
-	// Configuración de los claims
-	claims := token.Claims.(jwt.MapClaims)
-	claims["id"] = storedUser.ID
-	claims["username"] = storedUser.Username
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-	// Firmar el token
-	tokenString, err := token.SignedString([]byte("mysecretkey"))
+	// Generar el token JWT
+	tokenString, err := service.GenerateJWT(storedUser.ID, storedUser.Username)
 	if err != nil {
 		http.Error(w, "Error generating token", http.StatusInternalServerError)
 		return
 	}
 
 	// Responder con el token JWT
-	json.NewEncoder(w).Encode(map[string]string{
-		"token": tokenString,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
 }
