@@ -10,9 +10,6 @@ COPY go.mod go.sum ./
 # Descargar las dependencias
 RUN go mod download
 
-# Download the missing jwt package
-RUN go get github.com/golang-jwt/jwt/v4
-
 # Copiar el código fuente al contenedor
 COPY . .
 
