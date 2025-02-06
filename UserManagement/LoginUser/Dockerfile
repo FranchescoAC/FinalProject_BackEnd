@@ -4,6 +4,9 @@ FROM golang:1.19
 # Establecemos el directorio de trabajo
 WORKDIR /app
 
+# Download the missing jwt package
+RUN go get github.com/golang-jwt/jwt/v4
+
 # Copiamos el código al contenedor
 COPY . .
 
