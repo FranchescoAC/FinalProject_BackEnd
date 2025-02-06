@@ -9,7 +9,8 @@ on:
         required: true
       ec2_key:
         required: true
-
+      domain:
+        required: true  # Nuevo secreto que define el dominio
 
 jobs:
   connect_update:
@@ -24,8 +25,11 @@ jobs:
 
       - name: Copy docker-compose.yml from ${{ secrets.domain }} to EC2
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" BusManagement/docker-compose.yml ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/BusManagement/
-                
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" ${{ secrets.domain }}/docker-compose.yml ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/${{ secrets.domain }}/
+      - name: Ensure remote directory exists
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} "mkdir -p /home/ubuntu/${{ secrets.domain }}/"
+
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
@@ -47,10 +51,10 @@ jobs:
             docker-compose --version
 
             # Ir al directorio correcto
-            cd /home/ubuntu/BusManagement/
+            cd /home/ubuntu/${{ secrets.domain }}/
 
             # Ejecutar docker-compose usando el dominio dinámico
-            sudo docker-compose -f /home/ubuntu/BusManagement/docker-compose.yml pull
-            sudo docker-compose -f /home/ubuntu/BusManagement/docker-compose.yml down || true
-            sudo docker-compose -f /home/ubuntu/BusManagement/docker-compose.yml up -d --build
+            sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml pull
+            sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml down || true
+            sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml up -d --build
           EOF
