@@ -1,4 +1,4 @@
-name: Docker Setup & Update & Run new images
+name: Start EC2 and Deploy
 
 on:
   workflow_call:
@@ -10,50 +10,38 @@ on:
       ec2_key:
         required: true
       domain:
-        required: true  # Nuevo secreto que define el dominio
+        required: true
+      repository_name_registerbus:
+        required: true
+      repository_name_deletebus:
+        required: true
+      repository_name_update_bus:
+        required: true
+      repository_name_view_bus:
+        required: true
 
 jobs:
-  connect_update:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Create private key file
+      - name: Setup SSH Key
         run: |
           echo "${{ secrets.ec2_key }}" > private_key.pem
-          chmod 400 private_key.pem
-
-      - name: Copy docker-compose.yml from ${{ secrets.domain }} to EC2
-        run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" ${{ secrets.domain }}/docker-compose.yml ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/${{ secrets.domain }}/
-      - name: Ensure remote directory exists
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} "mkdir -p /home/ubuntu/${{ secrets.domain }}/"
+          chmod 600 private_key.pem
 
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
-            # Instala Docker si no está instalado
-            if ! command -v docker &> /dev/null; then
-              sudo apt update
-              sudo apt install -y docker.io
-              sudo systemctl enable docker
-              sudo usermod -aG docker ubuntu
-            fi
+            export DOCKER_USERNAME="${{ secrets.docker_username }}"
+            export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.repository_name_registerbus }}"
+            export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.repository_name_deletebus }}"
+            export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
+            export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.repository_name_view_bus }}"
 
-            # Instala Docker Compose correctamente en Ubuntu 24.04
-            if ! command -v docker-compose &> /dev/null; then
-              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
-              sudo chmod +x /usr/local/bin/docker-compose
-            fi
-
-            # Verifica la instalación
-            docker-compose --version
-
-            # Ir al directorio correcto
             cd /home/ubuntu/${{ secrets.domain }}/
-
-            # Ejecutar docker-compose usando el dominio dinámico
             sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml pull
             sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml down || true
             sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml up -d --build
