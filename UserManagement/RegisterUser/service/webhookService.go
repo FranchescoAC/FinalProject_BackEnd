@@ -8,42 +8,48 @@ import (
 	"userManagement/model"
 )
 
-// Enviar el webhook a TicketManagement
-func SendWebhookToTicketManagement(user model.User) {
-	webhookURL := "http://host.docker.internal:4002/api/tickets/register-ticket"
+// SendWebhookToNotificationManagement sends a webhook to NotificationManagement when a new user is registered
+func SendWebhookToNotificationManagement(user model.User) {
+	// Change this URL to NotificationManagement's webhook endpoint
+	//webhookURL := "http://host.docker.internal:5000/api/notifications/new-user"
+	webhookURL := "http://localhost:5000/api/notifications/new-user"
 
-	// Datos a enviar en el Webhook
+	// Data to be sent in the webhook
 	webhookData := map[string]interface{}{
 		"user_id":  user.ID,
 		"username": user.Username,
 		"email":    user.Email,
 	}
 
+	// Convert the payload to JSON
 	jsonData, err := json.Marshal(webhookData)
 	if err != nil {
-		log.Println("❌ Error al convertir usuario a JSON:", err)
+		log.Println("❌ Error marshaling user data to JSON:", err)
 		return
 	}
 
-	// Crear y enviar la solicitud HTTP POST
+	// Create the HTTP POST request
 	req, err := http.NewRequest("POST", webhookURL, bytes.NewBuffer(jsonData))
 	if err != nil {
-		log.Println("❌ Error creando la solicitud HTTP:", err)
+		log.Println("❌ Error creating the HTTP request:", err)
 		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
+
+	// Send the request
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Println("❌ Error enviando Webhook:", err)
+		log.Println("❌ Error sending the webhook:", err)
 		return
 	}
 	defer resp.Body.Close()
 
+	// Log the response
 	if resp.StatusCode == http.StatusOK {
-		log.Println("✅ Webhook enviado exitosamente a TicketManagement")
+		log.Println("✅ Webhook successfully sent to NotificationManagement")
 	} else {
-		log.Printf("⚠️ Error enviando Webhook. Estado: %s", resp.Status)
+		log.Printf("⚠️ Failed to send webhook. Status: %s", resp.Status)
 	}
 }
