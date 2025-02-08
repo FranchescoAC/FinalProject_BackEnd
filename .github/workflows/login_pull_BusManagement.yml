@@ -40,5 +40,5 @@ jobs:
           export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
           export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.repository_name_view_bus }}"
 
-          docker-compose -f ../BusManagement/docker-compose.yml build
-          docker-compose -f ../BusManagement/docker-compose.yml push
+          docker-compose -f ./BusManagement/docker-compose.yml build
+          docker-compose -f ./BusManagement/docker-compose.yml push
