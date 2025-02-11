@@ -37,12 +37,32 @@ jobs:
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -T -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
+            # Verificar que Docker está corriendo
+            if ! command -v docker &> /dev/null; then
+              echo "Docker no está instalado. Instalando Docker..."
+              sudo apt update && sudo apt install -y docker.io
+              sudo systemctl start docker
+              sudo systemctl enable docker
+            fi
+
+            # Verificar que Docker Compose está instalado
+            if ! command -v docker-compose &> /dev/null; then
+              echo "Docker Compose no está instalado. Instalando..."
+              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            fi
+
+            # Moverse a la carpeta del proyecto
             cd /home/ubuntu/BusManagement/
 
-            # Carga las variables de entorno desde .env
-            source ./.env
+            # Cargar variables de entorno
+            export $(grep -v '^#' .env | xargs)
 
-            sudo docker-compose -f ./docker-compose.yml pull
-            sudo docker-compose -f ./docker-compose.yml down
-            sudo docker-compose -f ./docker-compose.yml up -d --build
+            # Ejecutar Docker Compose
+            sudo docker-compose down
+            sudo docker-compose pull
+            sudo docker-compose up -d --build
+
+            echo "Despliegue completado."
           EOF
+
