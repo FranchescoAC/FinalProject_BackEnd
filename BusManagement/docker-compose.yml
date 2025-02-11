@@ -6,10 +6,10 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_REGISTERBUS}:latest"
     restart: always
     ports:
-      - "3001:3001"  # Mapea el puerto 3001 del contenedor al 3001 de tu host
-    depends_on:  # Asegura que el servicio register-bus espere a la base de datos
+      - "3001:3001" 
+    depends_on: 
       - db
-    environment:  # Variables de entorno para la conexión a la base de datos
+    environment:  
       - DB_HOST=${DB_HOST}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -24,6 +24,14 @@ services:
     restart: always
     ports:
       - "3000:3000"
+    depends_on: 
+      - db
+    environment:  
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
 
   update-bus:
     build:
@@ -33,6 +41,14 @@ services:
     restart: always
     ports:
       - "3002:3002"
+    depends_on: 
+      - db
+    environment:  
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
 
   view-bus:
     build:
