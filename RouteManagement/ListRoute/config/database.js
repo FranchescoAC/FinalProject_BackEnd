@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
-    const dbURI = process.env.MONGO_URI || "mongodb://localhost:27017/RouteManagement";
+    const dbURI = process.env.MONGO_URI || "mongodb://54.84.63.64:27017/RouteManagement";
     await mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log("MongoDB connected for ListRoute");
   } catch (err) {
