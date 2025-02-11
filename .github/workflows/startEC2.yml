@@ -3,7 +3,6 @@ name: Start EC2 and Deploy
 on:
   workflow_call:
     secrets:
-
       ec2_host:
         required: true
       ec2_key:
@@ -34,14 +33,12 @@ jobs:
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -T -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
-            export DOCKER_USERNAME="franchescoac"
-            export DOCKER_REPOSITORY_NAME_REGISTERBUS="${{ secrets.repository_name_registerbus }}"
-            export DOCKER_REPOSITORY_NAME_DELETEBUS="${{ secrets.repository_name_deletebus }}"
-            export DOCKER_REPOSITORY_NAME_BUS_UPDATE="${{ secrets.repository_name_update_bus }}"
-            export DOCKER_REPOSITORY_NAME_BUS_VIEW="${{ secrets.repository_name_view_bus }}"
-
             cd /home/ubuntu/${{ secrets.domain }}/
+
+            # Carga las variables de entorno desde .env
+            source ./.env
+
             sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml pull
-            sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml down || true
+            sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml down
             sudo docker-compose -f /home/ubuntu/${{ secrets.domain }}/docker-compose.yml up -d --build
           EOF
