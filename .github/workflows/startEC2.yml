@@ -36,7 +36,7 @@ jobs:
             cd /home/ubuntu
 
             # Copiar el directorio BusManagement usando rsync
-            sudo rsync -avz /home/runner/work/FinalProject_BackEnd/BusManagement/ ./
+            sudo rsync -avz /home/runner/work/FinalProject_BackEnd/BusManagement/ /home/ubuntu/BusManagement/
 
             # Ir al directorio BusManagement
             cd BusManagement/
