@@ -1,14 +1,14 @@
-const mysql = require('mysql2/promise'); // Usa mysql2/promise
+const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
 const connection = mysql.createPool({
-    host: 'localhost',       // O la IP del servidor MySQL si no es local
-    user: 'root',     // El usuario que creaste en MySQL (NO root, a menos que sea estrictamente necesario)
-    password: 'root', // La contraseña del usuario
-    database: 'bus_management', // El nombre de tu base de datos
-    port: 3306,             // El puerto de MySQL (generalmente 3306)
+    host: process.env.DB_HOST || 'busmanagement.ckkft1kjllti.us-east-1.rds.amazonaws.com', // Aquí usas el endpoint de RDS
+    user: process.env.DB_USER || 'admin', // Usa tu usuario de RDS
+    password: process.env.DB_PASSWORD || 'tu-contraseña', // La contraseña de RDS
+    database: process.env.DB_NAME || 'bus_management', // Nombre de tu base de datos
+    port: process.env.DB_PORT || 3306, // Puerto 3306 por defecto para MySQL
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
