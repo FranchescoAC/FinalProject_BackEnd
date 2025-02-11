@@ -30,15 +30,14 @@ jobs:
           echo "${{ secrets.ec2_key }}" > private_key.pem
           chmod 600 private_key.pem
 
+      - name: Copy BusManagement to EC2
+        run: |
+          scp -r -i private_key.pem -o StrictHostKeyChecking=no BusManagement ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/
+
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -T -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
-            cd /home/ubuntu
-
-            # Copiar el directorio BusManagement usando rsync (ruta corregida)
-            sudo rsync -avz ${{ github.workspace }}/BusManagement/ /home/ubuntu/BusManagement/
-
-            cd BusManagement/
+            cd /home/ubuntu/BusManagement/
 
             # Carga las variables de entorno desde .env
             source ./.env
