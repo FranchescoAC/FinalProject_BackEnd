@@ -29,22 +29,21 @@ jobs:
         run: |
           echo "${{ secrets.ec2_key }}" > private_key.pem
           chmod 600 private_key.pem
+
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -T -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
-            # Ir al directorio home del usuario ubuntu
             cd /home/ubuntu
 
-            # Copiar el directorio BusManagement usando rsync
-            sudo rsync -avz /home/runner/work/FinalProject_BackEnd/BusManagement/ /home/ubuntu/BusManagement/
+            # Copiar el directorio BusManagement usando rsync (ruta corregida)
+            sudo rsync -avz ${{ github.workspace }}/BusManagement/ /home/ubuntu/BusManagement/
 
-            # Ir al directorio BusManagement
             cd BusManagement/
 
             # Carga las variables de entorno desde .env
             source ./.env
 
-            sudo docker-compose -f ./docker-compose.yml pull  # Ruta corregida
-            sudo docker-compose -f ./docker-compose.yml down  # Ruta corregida
-            sudo docker-compose -f ./docker-compose.yml up -d --build  # Ruta corregida
+            sudo docker-compose -f ./docker-compose.yml pull
+            sudo docker-compose -f ./docker-compose.yml down
+            sudo docker-compose -f ./docker-compose.yml up -d --build
           EOF
