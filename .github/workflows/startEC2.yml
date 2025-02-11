@@ -35,6 +35,9 @@ jobs:
           ssh -T -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
             cd /home/ubuntu/${{ secrets.domain }}/
 
+            sudo rsync -avz /home/runner/work/BusManagement/ ./
+            cd BusManagement/
+
             # Carga las variables de entorno desde .env
             source ./.env
 
