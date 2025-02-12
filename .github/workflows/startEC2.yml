@@ -9,14 +9,7 @@ on:
         required: true
       domain:
         required: true
-      repository_name_registerbus:
-        required: true
-      repository_name_deletebus:
-        required: true
-      repository_name_update_bus:
-        required: true
-      repository_name_view_bus:
-        required: true
+
 
 jobs:
   deploy:
