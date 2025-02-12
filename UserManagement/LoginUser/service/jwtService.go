@@ -9,10 +9,11 @@ import (
 var JWT_SECRET_KEY = []byte("mysecretkey")
 
 // Generar un token JWT para el usuario autenticado
-func GenerateJWT(userID int, username string) (string, error) {
+func GenerateJWT(userID int, username string, role string) (string, error) {
 	claims := jwt.MapClaims{
 		"id":       userID,
 		"username": username,
+		"role":     role, 
 		"exp":      time.Now().Add(72 * time.Hour).Unix(), // Token válido por 72 horas
 	}
 

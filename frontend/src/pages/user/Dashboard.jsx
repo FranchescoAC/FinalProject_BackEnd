@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import "../styles/Dashboard.css";
+import { useAuth } from "../../context/AuthContext";
+import "../../styles/Dashboard.css";
 
 const Dashboard = () => {
   const { token, logout } = useAuth();
@@ -8,7 +8,7 @@ const Dashboard = () => {
 
   // Si el usuario no está autenticado, redirigir al login
   if (!token) {
-    navigate("/login");
+    navigate("/auth/login");
     return null;
   }
 

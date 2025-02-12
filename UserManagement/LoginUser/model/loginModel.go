@@ -9,6 +9,7 @@ type User struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	Role     string `json:"role"` 
 }
 
 // Obtener un usuario por su correo electrónico
@@ -20,8 +21,8 @@ func GetUserByEmail(email string) (User, error) {
 	defer db.Close()
 
 	var user User
-	query := `SELECT id, username, email, password FROM users WHERE email = $1`
-	err = db.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Email, &user.Password)
+	query := `SELECT id, username, email, password, role FROM users WHERE email = $1`
+	err = db.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Role)
 	if err != nil {
 		return User{}, err
 	}

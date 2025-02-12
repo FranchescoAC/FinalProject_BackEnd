@@ -31,14 +31,17 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Generar el token JWT
-	tokenString, err := service.GenerateJWT(storedUser.ID, storedUser.Username)
+	// Generar el token JWT con el role
+	tokenString, err := service.GenerateJWT(storedUser.ID, storedUser.Username, storedUser.Role)
 	if err != nil {
 		http.Error(w, "Error generating token", http.StatusInternalServerError)
 		return
 	}
 
-	// Responder con el token JWT
+	// Responder con el token JWT y el rol del usuario
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
+	json.NewEncoder(w).Encode(map[string]string{
+		"token": tokenString,
+		"role":  storedUser.Role,
+	})
 }
