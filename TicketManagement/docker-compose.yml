@@ -94,7 +94,7 @@ services:
       - MYSQL_USER=${DB_USER}  # Usuario para tu aplicación
       - MYSQL_PASSWORD=${DB_PASSWORD}  # Contraseña para tu aplicación
     ports:
-      - "3309:${DB_PORT}"  # Publica el puerto solo si necesitas acceder desde tu máquina local (opcional)
+      - "3309:3306"  # Publica el puerto solo si necesitas acceder desde tu máquina local (opcional)
     volumes:
       - mariadb_data:/var/lib/mysql  # Persiste los datos de MariaDB
 
