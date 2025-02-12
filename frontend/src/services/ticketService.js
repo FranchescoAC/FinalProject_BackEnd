@@ -3,11 +3,23 @@ import axios from 'axios';
 const API_URL = 'http://localhost:4002'; // TicketManagement
 
 export const getRoutes = async () => {
-    const response = await axios.get(`http://localhost:3002/api/routes/list`);
+  try {
+    const response = await axios.get('http://localhost:3002/api/routes/list');
+    return response.data.routes; // Devuelve solo el array de rutas
+  } catch (error) {
+    console.error('Error fetching routes:', error);
+    return []; // Devuelve un array vacío en caso de error
+  }
 };
 
 export const getBuses = async () => {
-  return await axios.get(`${API_URL}/buses`);
+  try {
+    const response = await axios.get(`http://localhost:3003/api/buses/details`);
+    return response.data; // Devuelve los datos de los buses
+  } catch (error) {
+    console.error('Error fetching buses:', error);
+    return []; // Devuelve un array vacío en caso de error
+  }
 };
 
 export const bookTicket = async (ticketData) => {

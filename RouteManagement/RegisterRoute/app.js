@@ -3,7 +3,7 @@ const connectDB = require("./config/database");
 const registerRoute = require("./routes/registerRoute");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 6001;
 
 // Middleware
 app.use(express.json());
