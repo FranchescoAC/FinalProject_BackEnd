@@ -1,9 +1,10 @@
 from bson.objectid import ObjectId
 from ..config.db import get_collection
 
-notifications_collection = get_collection('notifications')
+# FIX: Se agregó el nombre de la base de datos
+notifications_collection = get_collection('notification_management', 'notifications')
 
-# Insertar notificación
+# Eliminar notificación
 def delete_notification_model(notification_id):
     try:
         object_id = ObjectId(notification_id)  # Convertir a ObjectId

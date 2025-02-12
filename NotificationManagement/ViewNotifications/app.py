@@ -1,10 +1,9 @@
 from flask import Flask
-from app.routes.viewRoutes import notification_routes
+from app.routes.viewRoutes import notification_routes  # Corrección en la importación
 
 app = Flask(__name__)
 
-# Registrar rutas
 app.register_blueprint(notification_routes)
 
 if __name__ == '__main__':
-    app.run(port=5003, debug=True)
+    app.run(host='0.0.0.0', port=5003, debug=True)
