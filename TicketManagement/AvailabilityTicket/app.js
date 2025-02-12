@@ -1,6 +1,6 @@
 const express = require('express');
-const registerRoutes = require('../AvailabilityTicket/src/routes/availabilityRoutes');
-const db = require('../AvailabilityTicket/src/config/db'); // Importa el módulo db
+const availabilityRoutes = require('./src/routes/availabilityRoutes');
+const db = require('./src/config/db'); // Importa el módulo db
 const app = express();
 const PORT = process.env.PORT || 4004;
 
@@ -13,7 +13,7 @@ app.use((err, req, res, next) => {
 });
 
 // Rutas
-app.use('/api/tickets', registerRoutes); // Prefijo para las rutas de tickets
+app.use('/api/tickets', availabilityRoutes); // Prefijo para las rutas de tickets
 
 // Manejo de la conexión a la base de datos (se elimina la prueba inicial)
 async function startServer() {
@@ -22,8 +22,8 @@ async function startServer() {
         await db.getConnection(); // Ahora usa db.getConnection()
         console.log('Connected to MariaDB!');
         //connection.release(); // Ya no es necesario liberar la conexión aquí
-        app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+        app.listen(PORT, '0.0.0.0', () => { // Escucha en todas las interfaces
+            console.log(`Servidor corriendo en el puerto ${PORT}`);
         });
     } catch (error) {
         console.error('Failed to connect to MariaDB:', error);
