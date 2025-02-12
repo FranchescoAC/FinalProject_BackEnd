@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:4002'; // TicketManagement
 
 export const getRoutes = async () => {
   try {
-    const response = await axios.get('http://localhost:3002/api/routes/list');
+    const response = await axios.get('http://localhost:6002/api/routes/list');
     return response.data.routes; // Devuelve solo el array de rutas
   } catch (error) {
     console.error('Error fetching routes:', error);

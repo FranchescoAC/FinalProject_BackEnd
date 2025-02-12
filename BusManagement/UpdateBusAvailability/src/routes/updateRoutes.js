@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const updateController = require('../controller/updateController'); // Asegúrate de la ruta correcta
+const updateController = require("../controller/updateController"); // Asegúrate de que la ruta sea correcta
 
-// Rutas
-router.put('/update/:id', updateController.updateBusAvailability);
-
+// ✅ Ruta para actualizar la disponibilidad de un bus
+router.put("/buses/:id/availability", updateController.updateBusAvailability);
 
 module.exports = router;
+
