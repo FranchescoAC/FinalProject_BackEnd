@@ -3,7 +3,7 @@ const connectDB = require("./config/database");
 const deleteRoutes = require("./routes/deleteRoutes");
 
 const app = express();
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT || 6004;
 
 // Middleware
 app.use(express.json());
