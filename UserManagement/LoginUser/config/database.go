@@ -1,57 +1,52 @@
 package config
 
 import (
-	"database/sql"
-	"fmt"
-	"log"
-	"os"
-	"strconv"
-	
-	"github.com/joho/godotenv"
-	_ "github.com/lib/pq" // Importamos el driver de PostgreSQL
+    "database/sql"
+    "fmt"
+    "os"
+    "strconv"
+    "time"
 
+    _ "github.com/lib/pq"
 )
-
-func init() {
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatalf("❌ Error al cargar el archivo .env: %v", err)
-    }
-}
 
 // Conectar a la base de datos PostgreSQL usando variables de entorno
 func ConnectDB() (*sql.DB, error) {
-	// Se obtienen las variables de entorno
-	host := os.Getenv("DB_HOST")         
-	portStr := os.Getenv("DB_PORT")        
-	user := os.Getenv("DB_USER")          
-	password := os.Getenv("DB_PASSWORD")   
-	dbname := os.Getenv("DB_NAME")         
+	host := os.Getenv("DB_HOST")
+	portStr := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
 
 	// Convertir el puerto a entero
 	port, err := strconv.Atoi(portStr)
 	if err != nil {
-		log.Fatal("❌ Error al convertir DB_PORT a entero: ", err)
-		return nil, err
+		return nil, fmt.Errorf("❌ Error al convertir DB_PORT a entero: %w", err) // Usar fmt.Errorf para envolver el error original
 	}
 
 	// Construir la cadena de conexión
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=require", host, port, user, password, dbname)
 
-	// Abrir la conexión a la base de datos
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		log.Fatal("❌ Error al conectar a la base de datos: ", err)
-		return nil, err
+	var db *sql.DB
+	retryAttempts := 3       // Número de reintentos
+	retryDelay := time.Second * 5 // Tiempo de espera entre reintentos
+
+	for i := 0; i < retryAttempts; i++ {
+		db, err = sql.Open("postgres", psqlInfo)
+		if err == nil {
+			err = db.Ping()
+			if err == nil {
+				fmt.Println("✅ Conexión exitosa a la base de datos")
+				return db, nil
+			}
+		}
+
+		fmt.Printf("❌ Error al conectar a la base de datos (intento %d): %v\n", i+1, err)
+		if i < retryAttempts-1 {
+			time.Sleep(retryDelay)
+			fmt.Println("Reintentando conexión...")
+		}
 	}
 
-	// Probar la conexión
-	err = db.Ping()
-	if err != nil {
-		log.Fatal("❌ Error al hacer ping a la base de datos: ", err)
-		return nil, err
-	}
-
-	fmt.Println("✅ Conexión exitosa a la base de datos")
-	return db, nil
+	return nil, fmt.Errorf("❌ No se pudo conectar a la base de datos después de %d intentos: %w", retryAttempts, err) // Envolver el error final
 }

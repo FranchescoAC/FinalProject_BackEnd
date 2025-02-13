@@ -5,6 +5,14 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_DELETE}:latest"
     restart: always
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
 
   list-user:
     build:
@@ -12,6 +20,14 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_LIST}:latest"
     restart: always
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
 
   login-user:
     build:
@@ -19,6 +35,14 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_LOGIN}:latest"
     restart: always
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
 
   register-user:
     build:
@@ -26,6 +50,14 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_REGISTER}:latest"
     restart: always
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
 
   update-user:
     build:
@@ -33,3 +65,26 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_USER_UPDATE}:latest"
     restart: always
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

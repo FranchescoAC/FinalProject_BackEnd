@@ -23,9 +23,6 @@ WORKDIR /app
 # Copy compiled binary from the builder stage
 COPY --from=builder /app/main .
 
-# Copy .env file if needed
-COPY .env .env
-
 # Set environment variable for the port
 ENV PORT=2004
 
