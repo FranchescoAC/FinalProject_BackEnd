@@ -1,23 +1,36 @@
-# Usar una imagen base oficial de Go
-FROM golang:1.18-alpine
+# Stage 1: Build
+FROM golang:1.21 AS builder
 
-# Establecer el directorio de trabajo
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copiar el archivo go.mod y go.sum
+# Copy go.mod and go.sum to download dependencies
 COPY go.mod go.sum ./
-
-# Descargar las dependencias
 RUN go mod download
 
-# Copiar el código fuente al contenedor
+# Copy the entire project
 COPY . .
 
-# Compilar la aplicación Go
+# Build the Go application in release mode
 RUN go build -o main .
 
-# Exponer el puerto 2002
-EXPOSE 2002
+# Stage 2: Run
+FROM golang:1.21
 
-# Comando para ejecutar la aplicación
-CMD ["./main"]
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy compiled binary from the builder stage
+COPY --from=builder /app/main .
+
+# Copy .env file if needed
+COPY .env .env
+
+# Set environment variable for the port
+ENV PORT=2002
+
+# Expose the service port
+EXPOSE ${PORT}
+
+# Run the application
+CMD ["/app/main"]
