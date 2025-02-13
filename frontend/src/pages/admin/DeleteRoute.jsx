@@ -9,7 +9,7 @@ function DeleteRoute() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:7004/api/routes/${routeId}`);
+      await axios.delete(`http://44.196.89.150:6004/api/routes/delete/${routeId}`);
       alert("Route deleted successfully");
       navigate("/admin/routes");
     } catch (error) {

@@ -16,7 +16,7 @@ function UpdateRoute() {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://98.82.125.215:6003/api/routes/update/${routeId}`, updatedRoute);
+      await axios.put(`http://44.196.89.150:6003/api/routes/update/${routeId}`, updatedRoute);
       alert("Route updated successfully");
       navigate("/admin/routes");
     } catch (error) {

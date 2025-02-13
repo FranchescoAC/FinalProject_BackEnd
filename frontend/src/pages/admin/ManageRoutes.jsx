@@ -30,7 +30,7 @@ function ManageRoutes() {
 
   const addRoute = async () => {
     try {
-      await axios.post("http://98.82.125.215:6001/api/routes/register", newRoute);
+      await axios.post("http://44.196.89.150:6001/api/routes/register", newRoute);
       fetchRoutes();
       setNewRoute({ origin: "", destination: "", price: "", availableSeats: "", departureTime: "" });
     } catch (error) {

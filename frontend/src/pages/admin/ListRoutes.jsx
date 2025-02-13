@@ -13,7 +13,7 @@ function ListRoutes() {
 
   const fetchRoutes = async () => {
     try {
-      const response = await axios.get("http://98.82.125.215:6002/api/routes/list");
+      const response = await axios.get("http://44.196.89.150:6002/api/routes/list");
 
       // Acceder correctamente al array de rutas dentro de "routes"
       if (Array.isArray(response.data.routes)) {
