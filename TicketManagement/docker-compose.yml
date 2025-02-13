@@ -1,0 +1,102 @@
+
+services:
+  delete-ticket:
+    build:
+      context: ./DeleteTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_DELETE}:latest"
+    restart: always
+    ports:
+      - "4003:4003"  # Puerto para el servicio delete-ticket (puedes cambiarlo)
+    depends_on:
+      - mariadb  # Dependencia del servicio de MariaDB
+    environment:
+      - DB_HOST=${DB_HOST}  # Nombre del servicio de la base de datos
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}  # Puerto por defecto de MariaDB
+
+  availability-ticket:
+    build:
+      context: ./AvailabilityTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_AVAILABILITY}:latest"
+    restart: always
+    ports:
+      - "4004:4004"  # Puerto para el servicio availability-ticket (puedes cambiarlo)
+    depends_on:
+      - mariadb
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  register-ticket:
+    build:
+      context: ./RegisterTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_REGISTER}:latest"
+    restart: always
+    ports:
+      - "4002:4002"  # Puerto para el servicio register-ticket (puedes cambiarlo)
+    depends_on:
+      - mariadb
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  update-ticket:
+    build:
+      context: ./UpdateTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_UPDATE}:latest"
+    restart: always
+    ports:
+      - "4001:4001"  # Puerto para el servicio update-ticket (puedes cambiarlo)
+    depends_on:
+      - mariadb
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  view-ticket:
+    build:
+      context: ./ViewTicket
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_TICKET_VIEW}:latest"
+    restart: always
+    ports:
+      - "4000:4000"  # Puerto para el servicio view-ticket (puedes cambiarlo)
+    depends_on:
+      - mariadb
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  mariadb:  # Servicio de MariaDB
+    image: mariadb:latest  # o la versión que prefieras
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}  # Contraseña para el usuario root (¡cambia esto!)
+      - MYSQL_DATABASE=${DB_NAME}  # Nombre de la base de datos
+      - MYSQL_USER=${DB_USER}  # Usuario para tu aplicación
+      - MYSQL_PASSWORD=${DB_PASSWORD}  # Contraseña para tu aplicación
+    ports:
+      - "3309:3306"  # Publica el puerto solo si necesitas acceder desde tu máquina local (opcional)
+    volumes:
+      - mariadb_data:/var/lib/mysql  # Persiste los datos de MariaDB
+
+volumes:
+  mariadb_data:  # Volumen para los datos de MariaDB

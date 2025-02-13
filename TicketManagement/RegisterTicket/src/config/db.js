@@ -1,13 +1,15 @@
-const mysql = require('mysql2/promise'); // Importante: /promise
+require('dotenv').config(); // Importa dotenv para leer las variables de entorno
+const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
-    host: 'localhost', // O la dirección de tu servidor MariaDB
-    user: 'root',      // Tu usuario de MariaDB
-    password: 'root',  // Tu contraseña de MariaDB
-    database: 'ticket_management', // El nombre de tu base de datos
-    connectionLimit: 5, // Número máximo de conexiones en el pool
-    port: 3307          // El puerto de MariaDB (usualmente 3306 o 3307)
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    connectionLimit: 5,
+    port: process.env.DB_PORT,
 });
+
 
 async function getConnection() {
     try {

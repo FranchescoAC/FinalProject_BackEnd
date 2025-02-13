@@ -1,21 +1,14 @@
-const db = require('../config/db'); // Asegúrate de que la ruta sea correcta
-
-const Ticket = (id, bus_id, seat_number, status) => ({
-    id,
-    bus_id,
-    seat_number,
-    status,
-});
+const db = require('../config/db');
 
 const TicketModel = {
-  async getAvailableTickets() {
+    async getAvailableTickets() {
         const connection = await db.getConnection();
         try {
-            const [rows] = await connection.execute('SELECT * FROM tickets WHERE status = ?', ['available']);
-            return rows.map(row => Ticket(row.id, row.bus_id, row.seat_number, row.status));
+            const [rows] = await connection.execute('SELECT * FROM tickets WHERE availabiliti = ?', [true]); // Usa availabiliti = true
+            return rows; // Devuelve directamente las filas
         } catch (error) {
             console.error('Error en TicketModel.getAvailableTickets:', error);
-            throw error; // Re-lanza el error
+            throw error;
         } finally {
             connection.release();
         }

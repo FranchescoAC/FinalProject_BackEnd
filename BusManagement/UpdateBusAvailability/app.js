@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const updateRoutes = require('../UpdateBusAvailability/src/routes/updateRoutes');
+const updateRoutes = require('./src/routes/updateRoutes');
 const dotenv = require('dotenv');
 
 // Configuración
@@ -15,6 +15,6 @@ app.use('/api/buses', updateRoutes);
 
 
 // Iniciar el servidor
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {  // Escucha en todas las interfaces
+    console.log(`Server is running on port ${PORT}`); // Mensaje corregido
 });

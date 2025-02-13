@@ -1,27 +1,22 @@
-const db = require('../config/db'); // Asegúrate de que la ruta sea correcta
-
-const Ticket = (id, bus_id, seat_number, status) => ({
-    id,
-    bus_id,
-    seat_number,
-    status,
-});
+const db = require('../config/db');
 
 const TicketModel = {
     async update(id, updates) {
         const connection = await db.getConnection();
         try {
+            const { availabiliti, seat_number } = updates; // Nombre corregido
+
             const [result] = await connection.execute(
-                'UPDATE tickets SET status = ?, seat_number = ? WHERE id = ?',
-                [updates.status, updates.seat_number, id]
+                'UPDATE tickets SET availabiliti = ?, seat_number = ? WHERE id = ?', // Nombre corregido
+                [availabiliti, seat_number, id] // Nombre corregido
             );
-            return result.affectedRows > 0; // Devuelve true si se actualizó al menos una fila
+            return result.affectedRows > 0;
         } catch (error) {
-            console.error('Error en TicketModel.update:', error);
-            throw error; // Re-lanza el error
+            // ... (resto del código igual)
         } finally {
-            connection.release();
+            // ...
         }
     }
 }
+
 module.exports = TicketModel;

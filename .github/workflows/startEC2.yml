@@ -1,0 +1,61 @@
+name: Start EC2 and Deploy
+
+on:
+  workflow_call:
+    secrets:
+      ec2_host:
+        required: true
+      ec2_key:
+        required: true
+      domain:
+        required: true
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH Key
+        run: |
+          echo "${{ secrets.ec2_key }}" > private_key.pem
+          chmod 600 private_key.pem
+
+      - name: Copy domain to EC2
+        run: |
+          scp -r -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.domain }} ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/
+
+      - name: SSH into EC2 and Deploy Application
+        run: |
+          ssh -T -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
+            # Verificar que Docker está corriendo
+            if ! command -v docker &> /dev/null; then
+              echo "Docker no está instalado. Instalando Docker..."
+              sudo apt update && sudo apt install -y docker.io
+              sudo systemctl start docker
+              sudo systemctl enable docker
+            fi
+
+            # Verificar que Docker Compose está instalado
+            if ! command -v docker-compose &> /dev/null; then
+              echo "Docker Compose no está instalado. Instalandolo..."
+              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            fi
+
+            # Moverse a la carpeta del proyecto
+            cd /home/ubuntu/${{ secrets.domain }}/
+
+            # Cargar variables de entorno
+            export $(grep -v '^#' .env | xargs)
+
+            # Ejecutar Docker Compose
+            sudo docker-compose down
+            sudo docker-compose pull
+            sudo docker-compose up -d --build
+
+            echo "Despliegue completado."
+          EOF
+

@@ -1,10 +1,7 @@
 const express = require('express');
+const router = express.Router();
 const { updateTicket } = require('../controller/updateController');
 
-router = express.Router();
-
-// Define routes
-router.put('/update/:id', updateTicket);                  // Update a ticket
-
+router.put('/update/:id', updateTicket);
 
 module.exports = router;

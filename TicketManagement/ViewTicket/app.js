@@ -1,6 +1,6 @@
 const express = require('express');
-const viewRoutes = require('../ViewTicket/src/routes/viewRoutes');
-const db = require('../ViewTicket/src/config/db'); // Importa el módulo db
+const viewRoutes = require('./src/routes/viewRoutes');
+const db = require('./src/config/db'); // Importa el módulo db
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -22,8 +22,8 @@ async function startServer() {
         await db.getConnection(); // Ahora usa db.getConnection()
         console.log('Connected to MariaDB!');
         //connection.release(); // Ya no es necesario liberar la conexión aquí
-        app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+        app.listen(PORT, '0.0.0.0', () => { // Escucha en todas las interfaces
+            console.log(`Servidor corriendo en el puerto ${PORT}`);
         });
     } catch (error) {
         console.error('Failed to connect to MariaDB:', error);

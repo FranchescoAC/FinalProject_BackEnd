@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors'); // Importa el paquete cors
 const viewRoutes = require('./src/routes/viewRoutes');
-
 const dotenv = require('dotenv');
 
 // Configuración
@@ -10,9 +10,9 @@ const app = express();
 const PORT = 3003;
 
 // Middleware
+app.use(cors()); // Habilita CORS para todas las rutas
 app.use(bodyParser.json());
 app.use('/api/buses', viewRoutes);
-
 
 // Iniciar el servidor
 app.listen(PORT, () => {

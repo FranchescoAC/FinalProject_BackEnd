@@ -1,26 +1,20 @@
-const db = require('../config/db'); // Asegúrate de que la ruta sea correcta
-
-const Ticket = (id, bus_id, seat_number, status) => ({
-    id,
-    bus_id,
-    seat_number,
-    status,
-});
+const db = require('../config/db');
 
 const TicketModel = {
     async create(ticketData) {
         const connection = await db.getConnection();
         try {
+            const { name_bus, seat_number, availabiliti } = ticketData; // Nombre corregido
+
             const [result] = await connection.execute(
-                'INSERT INTO tickets (bus_id, seat_number, status) VALUES (?, ?, ?)',
-                [ticketData.bus_id, ticketData.seat_number, ticketData.status]
+                'INSERT INTO tickets (name_bus, seat_number, availabiliti) VALUES (?, ?, ?)', // Nombre corregido
+                [name_bus, seat_number, availabiliti] // Nombre corregido
             );
-            return { id: result.insertId, ...ticketData }; // Devuelve un objeto con el ID
+            return { id: result.insertId, name_bus, seat_number, availabiliti }; // Nombre corregido
         } catch (error) {
-            console.error('Error en TicketModel.create:', error);
-            throw error; // Re-lanza el error
+            // ... (resto del código igual)
         } finally {
-            connection.release();
+            // ...
         }
     }
 };

@@ -1,0 +1,4 @@
+# Ignorar archivos de Go
+*.exe
+*.test
+*.out

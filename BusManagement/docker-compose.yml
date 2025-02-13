@@ -1,0 +1,84 @@
+services:
+  register-bus:
+    build:
+      context: ./RegisterBus
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_REGISTERBUS}:latest"
+    restart: always
+    ports:
+      - "3001:3001" 
+    depends_on: 
+      - db
+    environment:  
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  delete-bus:
+    build:
+      context: ./DeleteBus
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_DELETEBUS}:latest"
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - db
+    environment:  
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  update-bus:
+    build:
+      context: ./UpdateBusAvailability
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_BUS_UPDATE}:latest"
+    restart: always
+    ports:
+      - "3002:3002"
+    depends_on: 
+      - db
+    environment:  
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  view-bus:
+    build:
+      context: ./ViewBusDetails
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_BUS_VIEW}:latest"
+    restart: always
+    ports:
+      - "3003:3003"
+    depends_on:  # Asegura que el servicio view-bus espere a la base de datos
+      - db
+    environment:  # Define las variables de entorno para la conexión a la base de datos
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  db:  # Nuevo servicio para la base de datos (MySQL)
+    image: mysql:8.0  # Usa la imagen de MySQL que prefieras
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}  # Contraseña para el usuario root (¡cambia esto!)
+      MYSQL_DATABASE: ${DB_NAME}  # Nombre de la base de datos
+      MYSQL_USER: ${DB_USER}  # Usuario para tu aplicación
+      MYSQL_PASSWORD: ${DB_PASSWORD}  # Contraseña para tu aplicación
+    ports:
+      - "3308:3306" # Solo si necesitas acceder a MySQL desde tu máquina local (opcional)
+    volumes:
+      - db_data:/var/lib/mysql  # Persiste los datos de la base de datos
+
+volumes:
+  db_data:  # Define el volumen para los datos de MySQL

@@ -1,34 +1,31 @@
 const express = require('express');
-const updateRoutes = require('../UpdateTicket/src/routes/updateRoutes');
-const db = require('../RegisterTicket/src/config/db'); // Importa el módulo db
+const bodyParser = require('body-parser');
+const ticketRoutes = require('./src/routes/registerRoutes');
+const db = require('./src/config/db');
 const app = express();
 const PORT = process.env.PORT || 4002;
 
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Middleware para manejar errores globalesS
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Something went wrong!' });
-});
+app.use('/api/tickets', ticketRoutes);
 
-// Rutas
-app.use('/api/tickets', updateRoutes); // Prefijo para las rutas de tickets
-
-// Manejo de la conexión a la base de datos (se elimina la prueba inicial)
 async function startServer() {
     try {
-        //const connection = await db.connect(); // Antes usabas db.connect()
-        await db.getConnection(); // Ahora usa db.getConnection()
-        console.log('Connected to MariaDB!');
-        //connection.release(); // Ya no es necesario liberar la conexión aquí
-        app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+        await db.getConnection();
+        console.log('✅ Conectado a la base de datos.');
+        app.listen(PORT, '0.0.0.0', () => { // Escucha en todas las interfaces
+            console.log(` Servidor corriendo en http://localhost:${PORT}`);
         });
     } catch (error) {
-        console.error('Failed to connect to MariaDB:', error);
+        console.error('❌ Error conectando a la base de datos:', error);
         process.exit(1);
     }
 }
+
+app.use((err, req, res, next) => {
+    console.error('❌ Error global:', err.stack);
+    res.status(500).json({ message: 'Algo salió mal en el servidor. Intenta nuevamente más tarde.' });
+});
 
 startServer();

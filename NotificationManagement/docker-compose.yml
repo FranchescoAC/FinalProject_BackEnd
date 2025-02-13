@@ -1,0 +1,33 @@
+services:
+  create-notifications:
+    build:
+      context: ./CreateNotifications
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_NOTIFICATION_CREATE}:latest"
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+
+  delete-notifications:
+    build:
+      context: ./DeleteNotifications
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_NOTIFICATION_DELETE}:latest"
+    restart: always
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+
+  view-notifications:
+    build:
+      context: ./ViewNotifications
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_NOTIFICATION_VIEW}:latest"
+    restart: always
+    ports:
+      - "5003:5003"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}

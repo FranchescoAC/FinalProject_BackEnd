@@ -1,0 +1,45 @@
+services:
+  delete-route:
+    build:
+      context: ./DeleteRoute
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_ROUTE_DELETE}:latest"
+    restart: always
+    ports:
+      - "6004:6004"  # Puerto para el servicio delete-route (puedes cambiarlo)
+    environment:
+      - MONGO_URI=${MONGO_URI}
+
+  list-route:
+    build:
+      context: ./ListRoute
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_ROUTE_LIST}:latest"
+    restart: always
+    ports:
+      - "6002:6002"  # Puerto para el servicio list-route (puedes cambiarlo)
+    environment:
+      - MONGO_URI=${MONGO_URI}
+
+  register-route:
+    build:
+      context: ./RegisterRoute
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_ROUTE_REGISTER}:latest"
+    restart: always
+    ports:
+      - "6001:6001"  # Puerto para el servicio register-route (puedes cambiarlo)
+    environment:
+      - MONGO_URI=${MONGO_URI}
+
+  update-route:
+    build:
+      context: ./UpdateRoute
+      dockerfile: Dockerfile
+    image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_ROUTE_UPDATE}:latest"
+    restart: always
+    ports:
+      - "6003:6003"  # Puerto para el servicio update-route (puedes cambiarlo)
+    environment:
+      - MONGO_URI=${MONGO_URI}
+

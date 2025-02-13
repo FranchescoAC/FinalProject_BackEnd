@@ -1,0 +1,47 @@
+package config
+
+import (
+	"database/sql"
+	"fmt"
+	"log"
+	"os"
+	"strconv"
+
+	_ "github.com/lib/pq" // Importamos el driver de PostgreSQL
+)
+
+// ConnectDB establece la conexión a la base de datos usando variables de entorno.
+func ConnectDB() (*sql.DB, error) {
+	// Se leen las variables de entorno.
+	host := os.Getenv("DB_HOST")         
+	portStr := os.Getenv("DB_PORT")       
+	user := os.Getenv("DB_USER")          
+	password := os.Getenv("DB_PASSWORD")   
+	dbname := os.Getenv("DB_NAME")        
+
+	// Convertir el puerto a entero.
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		log.Fatalf("❌ Error al convertir DB_PORT a entero: %v", err)
+		return nil, err
+	}
+
+	// Construir la cadena de conexión.
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=require", host, port, user, password, dbname)
+
+	// Abrir la conexión.
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		log.Fatalf("❌ Error al conectar a la base de datos: %v", err)
+		return nil, err
+	}
+
+	// Probar la conexión.
+	if err = db.Ping(); err != nil {
+		log.Fatalf("❌ Error al hacer ping a la base de datos: %v", err)
+		return nil, err
+	}
+
+	fmt.Println("✅ Conexión exitosa a la base de datos")
+	return db, nil
+}
