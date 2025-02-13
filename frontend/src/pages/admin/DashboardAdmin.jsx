@@ -5,9 +5,16 @@ import { useNavigate } from "react-router-dom";
 const DashboardAdmin = () => {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // 🔥 Eliminar el token JWT
+    localStorage.removeItem("role"); // 🔥 Eliminar el rol del usuario
+    navigate("/login"); // 🔥 Redirigir al login
+  };
+
   return (
     <Container className="mt-5">
       <h2 className="text-center mb-4">Admin Dashboard</h2>
+
       <Row className="justify-content-center">
         <Col md={6}>
           <Card className="shadow mb-4">
@@ -53,6 +60,13 @@ const DashboardAdmin = () => {
           </Card>
         </Col>
       </Row>
+
+      {/* 🔥 Botón de Logout */}
+      <div className="text-center mt-4">
+        <Button variant="danger" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
     </Container>
   );
 };
