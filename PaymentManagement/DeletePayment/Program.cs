@@ -23,11 +23,7 @@ builder.Services.AddCors(options =>
 // ✅ Agregar servicios al contenedor
 builder.Services.AddControllers();
 
-// ✅ Inyección de dependencia para tu DbContext (reemplaza MySqlDatabase con el nombre real)
-builder.Services.AddDbContext<MySqlDatabase>(options => 
-    options.UseMySql(builder.Configuration.GetConnectionString("YourConnectionString"))); // Usa MySql
-
-// ✅ Inyección de dependencia para tu clase de base de datos (renombrada a MySqlDatabase)
+// Registrar MySqlDatabase como Singleton (ya que no usa Entity Framework)
 builder.Services.AddSingleton<MySqlDatabase>();
 
 var app = builder.Build();

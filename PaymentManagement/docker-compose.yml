@@ -6,7 +6,7 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_DELETE}:latest"
     restart: always
     ports:
-      - "5004:5004" 
+      - "7003:7003" 
     depends_on: 
       - db
     environment:  
@@ -23,7 +23,7 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_LIST}:latest"
     restart: always
     ports:
-      - "5002:5002" 
+      - "7001:7001" 
     depends_on: 
       - db
     environment:  
@@ -40,7 +40,7 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_REGISTER}:latest"
     restart: always
     ports:
-      - "5000:5000" 
+      - "7000:7000" 
     depends_on: 
       - db
     environment:  
@@ -57,7 +57,7 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_UPDATE}:latest"
     restart: always
     ports:
-      - "5003:5003" 
+      - "7002:7002" 
     depends_on: 
       - db
     environment:  

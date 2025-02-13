@@ -34,7 +34,7 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseCors("AllowAllOrigins"); // ✅ Habilitar CORS para acceso externo
 app.MapControllers();
-app.RegisterPaymentRoutes();
+app.RegisterRoutes();
 
 // ✅ Configurar la aplicación para escuchar en 0.0.0.0 y el puerto 7002
 app.Urls.Add($"http://0.0.0.0:{port}");

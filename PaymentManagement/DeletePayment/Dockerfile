@@ -8,7 +8,7 @@ RUN dotnet restore
 
 # Copiar el resto de la aplicación y compilarla en modo release
 COPY . ./
-RUN dotnet publish -c Release -o /publish
+RUN dotnet publish --no-restore -c Release -o /publish
 
 # Usar la imagen de .NET runtime para ejecutar la aplicación
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
