@@ -9,7 +9,11 @@ const PORT = process.env.PORT || 6003;
 
 // Middleware
 app.use(express.json());
-app.use(cors()); // Habilitar CORS
+app.use(cors({
+  origin: "*", // Permitir solicitudes desde cualquier origen
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // Database Connection
 connectDB();
