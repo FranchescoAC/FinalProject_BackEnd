@@ -7,9 +7,14 @@ import Dashboard from "./pages/user/Dashboard";
 import Tickets from "./pages/user/Tickets";
 import Payments from "./pages/user/Payments";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
+import ManageRoutes from "./pages/admin/ManageRoutes";
+import ListRoutes from "./pages/admin/ListRoutes";
+import UpdateRoute from "./pages/admin/UpdateRoute";
+import DeleteRoute from "./pages/admin/DeleteRoute";
+
 
 function App() {
-  const { token, role } = useAuth(); // ✅ Ahora obtenemos el rol del contexto
+  const { token, role } = useAuth(); // ✅ Obtenemos token y rol del contexto
 
   return (
     <BrowserRouter>
@@ -21,13 +26,13 @@ function App() {
         {/* Rutas protegidas para usuarios normales */}
         <Route path="/dashboard" element={token && role === "user" ? <Dashboard /> : <Navigate to="/login" />} />
         <Route path="/tickets" element={token && role === "user" ? <Tickets /> : <Navigate to="/login" />} />
-        <Route path="/payments" element={token && role === "user" ? <Payments /> : <Navigate to="/login" />} />
 
-        {/* Rutas protegidas para administradores */}
+        {/* Rutas protegidas para admin */}
         <Route path="/admin/dashboard" element={token && role === "admin" ? <DashboardAdmin /> : <Navigate to="/login" />} />
-
-        {/* Redirección por defecto */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/admin/routes" element={token && role === "admin" ? <ManageRoutes /> : <Navigate to="/login" />} />
+        <Route path="/admin/routes/list" element={token && role === "admin" ? <ListRoutes /> : <Navigate to="/login" />} />
+        <Route path="/admin/routes/update" element={token && role === "admin" ? <UpdateRoute /> : <Navigate to="/login" />} />
+        <Route path="/admin/routes/delete" element={token && role === "admin" ? <DeleteRoute /> : <Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   );
