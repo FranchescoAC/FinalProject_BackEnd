@@ -1,19 +1,25 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+# Usar la imagen oficial de .NET SDK para compilar y publicar la aplicación
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
-EXPOSE 5002
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY . .
-RUN dotnet restore "ListPayment.csproj"
-RUN dotnet build "ListPayment.csproj" -c Release -o /app/build
+# Copiar archivos del proyecto y restaurar las dependencias
+COPY *.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish "ListPayment.csproj" -c Release -o /app/publish
+# Copiar el resto de la aplicación y compilarla en modo release
+COPY . ./
+RUN dotnet publish -c Release -o /publish
 
-FROM base AS final
+# Usar la imagen de .NET runtime para ejecutar la aplicación
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+# Copiar la aplicación publicada desde la etapa anterior
+COPY --from=build /publish .
+
+# Exponer el puerto definido en el .env 
+ENV PORT=7001
+EXPOSE ${PORT}
+
+# Comando para ejecutar la aplicación
 ENTRYPOINT ["dotnet", "ListPayment.dll"]
-
-

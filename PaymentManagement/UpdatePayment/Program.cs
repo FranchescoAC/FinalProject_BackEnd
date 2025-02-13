@@ -3,26 +3,42 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using UpdatePayment.config;
 using UpdatePayment.routes;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers();
+// ✅ Cargar configuración de entorno
+var port = Environment.GetEnvironmentVariable("PORT") ?? "7002";
 
-// Configure database connection
-var connectionString = "Server=paymentdb.ckkft1kjllti.us-east-1.rds.amazonaws.com;Database=payment_management;User=admin;Password=Basepayment0806;";
-builder.Services.AddSingleton(new Database(connectionString));
+// ✅ Configurar CORS para permitir solicitudes desde cualquier origen
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        policy => policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
+
+// ✅ Agregar servicios al contenedor
+builder.Services.AddControllers();
+builder.Services.AddSingleton<Database>(); // Conexión a la base de datos
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ✅ Configurar el pipeline de la aplicación
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 
 app.UseRouting();
+app.UseCors("AllowAllOrigins"); // ✅ Habilitar CORS para acceso externo
 app.MapControllers();
-app.RegisterRoutes();
+app.RegisterPaymentRoutes();
 
-app.Run("http://localhost:5003");
+// ✅ Configurar la aplicación para escuchar en 0.0.0.0 y el puerto 7002
+app.Urls.Add($"http://0.0.0.0:{port}");
+
+Console.WriteLine($"✅ Server is running on port {port}");
+
+app.Run();

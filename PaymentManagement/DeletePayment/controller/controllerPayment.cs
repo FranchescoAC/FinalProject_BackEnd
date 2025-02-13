@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DeletePayment.config;
 using MySql.Data.MySqlClient;
+using System;
 
 namespace DeletePayment.controller
 {
@@ -30,14 +31,14 @@ namespace DeletePayment.controller
 
                 if (rowsAffected == 0)
                 {
-                    return NotFound(new { error = "Payment not found" });
+                    return NotFound(new { error = "❌ Payment not found" });
                 }
 
-                return Ok(new { message = "Payment deleted successfully" });
+                return Ok(new { message = "✅ Payment deleted successfully" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return StatusCode(500, new { error = $"❌ Database error: {ex.Message}" });
             }
         }
     }

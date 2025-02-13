@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using ListPayment.config;
 using ListPayment.model;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace ListPayment.controller
 {
@@ -42,9 +44,8 @@ namespace ListPayment.controller
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return StatusCode(500, new { error = $"❌ Database error: {ex.Message}" });
             }
         }
     }
 }
-

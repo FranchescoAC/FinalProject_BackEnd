@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using UpdatePayment.config;
 using UpdatePayment.model;
 using MySql.Data.MySqlClient;
+using System;
 
 namespace UpdatePayment.controller
 {
@@ -37,14 +38,14 @@ namespace UpdatePayment.controller
 
                 if (rowsAffected == 0)
                 {
-                    return NotFound(new { error = "Payment not found" });
+                    return NotFound(new { error = "❌ Payment not found" });
                 }
 
-                return Ok(new { message = "Payment updated successfully" });
+                return Ok(new { message = "✅ Payment updated successfully" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return StatusCode(500, new { error = $"❌ Database error: {ex.Message}" });
             }
         }
     }
