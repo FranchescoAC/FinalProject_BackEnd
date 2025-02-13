@@ -24,5 +24,77 @@ jobs:
         domain: ${{ secrets.DOMAIN_BUS }}
 
 
+  Deploy-Docker-Compose-Ticket-Management:
+    uses: ./.github/workflows/login_pull_TicketManagement.yml
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      repository_name_delete_ticket: ${{ secrets.DOCKER_REPOSITORY_NAME_TICKET_DELETE }}
+      repository_name_register_ticket: ${{ secrets.DOCKER_REPOSITORY_NAME_TICKET_REGISTER }}
+      repository_name_update_ticket: ${{ secrets.DOCKER_REPOSITORY_NAME_TICKET_UPDATE }}
+      repository_name_view_ticket: ${{ secrets.DOCKER_REPOSITORY_NAME_TICKET_VIEW }}
+      repository_name_availability_ticket: ${{ secrets.DOCKER_REPOSITORY_NAME_TICKET_AVAILABILITY }}
+
+  ssh-connect-ec2-Ticket-Management:
+      needs: Deploy-Docker-Compose-Ticket-Management
+      uses: ./.github/workflows/startEC2.yml
+      secrets:
+        ec2_host: ${{ secrets.EC2_HOST_TICKET_MANAGEMENT }}
+        ec2_key: ${{ secrets.EC2_KEY_TICKET_MANAGEMENT }}
+        domain: ${{ secrets.DOMAIN_TICKET }}
+
+  Deploy-Docker-Compose-Notification-Management:
+    uses: ./.github/workflows/login_pull_NotificationManagement.yml
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      repository_name_notification_create: ${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_CREATE }}
+      repository_name_notification_delete: ${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_DELETE }}
+      repository_name_notification_view: ${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_VIEW }}
+
+  ssh-connect-ec2-Notification-Management:
+      needs: Deploy-Docker-Compose-Notification-Management
+      uses: ./.github/workflows/startEC2.yml
+      secrets:
+        ec2_host: ${{ secrets.EC2_HOST_NOTIFICATION_MANAGEMENT }}
+        ec2_key: ${{ secrets.EC2_KEY_NOTIFICATION_MANAGEMENT }}
+        domain: ${{ secrets.DOMAIN_NOTIFICATION }}
+
+  Deploy-Docker-Compose-Route-Management:
+    uses: ./.github/workflows/login_pull_RouteManagement.yml
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      repository_name_delete_route: ${{ secrets.DOCKER_REPOSITORY_NAME_ROUTE_DELETE }}
+      repository_name_list_route: ${{ secrets.DOCKER_REPOSITORY_NAME_ROUTE_LIST }}
+      repository_name_register_route: ${{ secrets.DOCKER_REPOSITORY_NAME_ROUTE_REGISTER }}
+      repository_name_update_route: ${{ secrets.DOCKER_REPOSITORY_NAME_ROUTE_UPDATE }}
+
+  ssh-connect-ec2-Route-Management:
+      needs: Deploy-Docker-Compose-Route-Management
+      uses: ./.github/workflows/startEC2.yml
+      secrets:
+        ec2_host: ${{ secrets.EC2_HOST_ROUTE_MANAGEMENT }}
+        ec2_key: ${{ secrets.EC2_KEY_ROUTE_MANAGEMENT }}
+        domain: ${{ secrets.DOMAIN_ROUTE }}
+
+  Deploy-Docker-Compose-Payment-Management:
+    uses: ./.github/workflows/login_pull_PaymentManagement.yml
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      repository_name_delete_payment: ${{ secrets.DOCKER_REPOSITORY_NAME_PAYMENT_DELETE }}
+      repository_name_list_payment: ${{ secrets.DOCKER_REPOSITORY_NAME_PAYMENT_LIST }}
+      repository_name_register_payment: ${{ secrets.DOCKER_REPOSITORY_NAME_PAYMENT_REGISTER }}
+      repository_name_update_payment: ${{ secrets.DOCKER_REPOSITORY_NAME_PAYMENT_UPDATE }}
+
+  ssh-connect-ec2-Payment-Management:
+      needs: Deploy-Docker-Compose-Payment-Management
+      uses: ./.github/workflows/startEC2.yml
+      secrets:
+        ec2_host: ${{ secrets.EC2_HOST_PAYMENT_MANAGEMENT }}
+        ec2_key: ${{ secrets.EC2_KEY_PAYMENT_MANAGEMENT }}
+        domain: ${{ secrets.DOMAIN_PAYMENT }}
+
 
 
