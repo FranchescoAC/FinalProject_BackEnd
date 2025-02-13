@@ -5,6 +5,16 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_DELETE}:latest"
     restart: always
+    ports:
+      - "5004:5004" 
+    depends_on: 
+      - db
+    environment:  
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
 
   list-payment:
     build:
@@ -12,6 +22,16 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_LIST}:latest"
     restart: always
+    ports:
+      - "5002:5002" 
+    depends_on: 
+      - db
+    environment:  
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
 
   register-payment:
     build:
@@ -19,6 +39,16 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_REGISTER}:latest"
     restart: always
+    ports:
+      - "5000:5000" 
+    depends_on: 
+      - db
+    environment:  
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
 
   update-payment:
     build:
@@ -26,3 +56,29 @@ services:
       dockerfile: Dockerfile
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_PAYMENT_UPDATE}:latest"
     restart: always
+    ports:
+      - "5003:5003" 
+    depends_on: 
+      - db
+    environment:  
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+
+  db:  # Nuevo servicio para la base de datos (MySQL)
+    image: mysql:8.0  # Usa la imagen de MySQL que prefieras
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}  # Contraseña para el usuario root (¡cambia esto!)
+      MYSQL_DATABASE: ${DB_NAME}  # Nombre de la base de datos
+      MYSQL_USER: ${DB_USER}  # Usuario para tu aplicación
+      MYSQL_PASSWORD: ${DB_PASSWORD}  # Contraseña para tu aplicación
+    ports:
+      - "3310:3306" # Solo si necesitas acceder a MySQL desde tu máquina local (opcional)
+    volumes:
+      - db_data:/var/lib/mysql  # Persiste los datos de la base de datos
+
+volumes:
+  db_data:  # Define el volumen para los datos de MySQL
