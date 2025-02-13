@@ -95,7 +95,7 @@ jobs:
         ec2_host: ${{ secrets.EC2_HOST_PAYMENT_MANAGEMENT }}
         ec2_key: ${{ secrets.EC2_KEY_PAYMENT_MANAGEMENT }}
         domain: ${{ secrets.DOMAIN_PAYMENT }}
-
+  
   Deploy-Docker-Compose-Route-Management:
     uses: ./.github/workflows/login_pull_RouteManagement.yml
     secrets:
