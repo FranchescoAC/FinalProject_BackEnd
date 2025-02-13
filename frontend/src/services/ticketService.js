@@ -14,7 +14,7 @@ export const getRoutes = async () => {
 
 export const getBuses = async () => {
   try {
-    const response = await axios.get(`http://localhost:3003/api/buses/details`);
+    const response = await axios.get(`http://3.224.72.234:3003/api/buses/details`);
     return response.data; // Devuelve los datos de los buses
   } catch (error) {
     console.error('Error fetching buses:', error);

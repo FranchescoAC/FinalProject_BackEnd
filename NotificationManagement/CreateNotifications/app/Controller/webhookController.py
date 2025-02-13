@@ -40,7 +40,7 @@ def receive_webhook():
 # Function to send an email using SMTP
 def send_email(recipient, subject, body):
     sender_email = "vinculacionvcs@gmail.com"  # Replace with your sender email
-    sender_password = "aklw zuug wgfv ebso"  # Replace with your sender email password
+    sender_password = "fgak dmej nmmc kuom"  # Replace with your sender email password
 
     # Setup the MIMEText object with the email content
     message = MIMEText(body)

@@ -7,17 +7,18 @@ export const getUsers = async () => {
   return await axios.get("http://localhost:2002/users");
 };
 
-// Eliminar un usuario
+/* Eliminar un usuario
 export const deleteUser = async (userId) => {
     return await axios.delete(`${"http://localhost:2004/deleteUser"}?id=${userId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-  };
+  };*/
 
 
-// ✅ Actualizar usuario
+/* ✅ Actualizar usuario
 export const updateUser = async (userId, updatedData) => {
   return await axios.put(`${"http://localhost:2003/deleteUser"}/${userId}`, updatedData);
-};
+}; 
+*/
