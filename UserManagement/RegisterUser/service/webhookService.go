@@ -11,7 +11,7 @@ import (
 // SendWebhookToNotificationManagement sends a webhook to NotificationManagement when a new user is registered
 func SendWebhookToNotificationManagement(user model.User) {
 	// Change this URL to NotificationManagement's webhook endpoint
-	webhookURL := "http://localhost:5000/api/notifications/new-user"
+	webhookURL := "http://54.242.61.21:5000/api/notifications/new-user"
 
 	// Data to be sent in the webhook
 	webhookData := map[string]interface{}{

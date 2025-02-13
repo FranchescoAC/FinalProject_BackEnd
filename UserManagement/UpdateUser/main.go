@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
+
 	"userManagement/routes"
 
 	"github.com/gorilla/mux"
@@ -10,25 +12,33 @@ import (
 )
 
 func main() {
-	// Crear el router
+	// Load server port from environment variable (default: 2003)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "2003"
+	}
+
+	// Initialize router
 	r := mux.NewRouter()
 
-	// Configurar las rutas
+	// Register routes for updating users
 	routes.SetRoutes(r)
 
-	// Configurar CORS
+	// Configure CORS to allow external requests
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"}, // Permite cualquier origen (puedes restringirlo)
+		AllowedOrigins:   []string{"*"}, // Allow all origins (can be restricted if needed)
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Authorization", "Content-Type"},
 		AllowCredentials: true,
 	})
 
-	// Envolver el router con CORS
+	// Wrap router with CORS middleware
 	handler := corsHandler.Handler(r)
 
-	// Iniciar el servidor
-	port := ":2003"
-	log.Println("✅ Servidor de UpdateUser corriendo en http://localhost" + port)
-	log.Fatal(http.ListenAndServe(port, handler))
+	// Configure server to listen on 0.0.0.0:<port> for external access
+	serverAddress := "0.0.0.0:" + port
+	log.Println("✅ UpdateUser service running at http://" + serverAddress)
+
+	// Start HTTP server
+	log.Fatal(http.ListenAndServe(serverAddress, handler))
 }

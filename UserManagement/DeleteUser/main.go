@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
+
 	"userManagement/routes"
 
 	"github.com/gorilla/mux"
@@ -10,25 +12,33 @@ import (
 )
 
 func main() {
-	// Create the router
+	// Load server port from environment variable (default: 2004)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "2004"
+	}
+
+	// Initialize router
 	r := mux.NewRouter()
 
-	// Set up the routes
+	// Register routes for deleting users
 	routes.SetRoutes(r)
 
-	// Configure CORS
+	// Configure CORS to allow external requests
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"}, // Allow all origins (you can restrict if needed)
+		AllowedOrigins:   []string{"*"}, // Allow all origins (can be restricted if needed)
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Authorization", "Content-Type"},
 		AllowCredentials: true,
 	})
 
-	// Wrap the router with CORS middleware
+	// Wrap router with CORS middleware
 	handler := corsHandler.Handler(r)
 
-	// Start the server on port 2004
-	port := ":2004"
-	log.Println("✅ DeleteUser service running at http://localhost" + port)
-	log.Fatal(http.ListenAndServe(port, handler))
+	// Configure server to listen on 0.0.0.0:<port> for external access
+	serverAddress := "0.0.0.0:" + port
+	log.Println("✅ DeleteUser service running at http://" + serverAddress)
+
+	// Start HTTP server
+	log.Fatal(http.ListenAndServe(serverAddress, handler))
 }

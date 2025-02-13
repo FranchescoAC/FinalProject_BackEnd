@@ -1,13 +1,36 @@
-FROM golang:1.17
+# Stage 1: Build
+FROM golang:1.21 AS builder
 
+# Set the working directory inside the container
 WORKDIR /app
 
+# Copy go.mod and go.sum to download dependencies
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the entire project
 COPY . .
 
-RUN go mod tidy
-
+# Build the Go application in release mode
 RUN go build -o main .
 
-EXPOSE 2000
+# Stage 2: Run
+FROM golang:1.21
 
-CMD ["./main"]
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy compiled binary from the builder stage
+COPY --from=builder /app/main .
+
+# Copy .env file if needed
+COPY .env .env
+
+# Set environment variable for the port
+ENV PORT=2000
+
+# Expose the service port
+EXPOSE ${PORT}
+
+# Run the application
+CMD ["/app/main"]

@@ -1,17 +1,36 @@
-# Usamos una imagen base de Go
-FROM golang:1.19
+# Stage 1: Build
+FROM golang:1.21 AS builder
 
-# Establecemos el directorio de trabajo
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copiamos el código al contenedor
+# Copy go.mod and go.sum to download dependencies
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the entire project
 COPY . .
 
-# Instalamos las dependencias
-RUN go mod tidy
+# Build the Go application in release mode
+RUN go build -o main .
 
-# Exponemos el puerto en el que correrá el servicio
-EXPOSE 2001
+# Stage 2: Run
+FROM golang:1.21
 
-# Ejecutamos el servidor
-CMD ["go", "run", "main.go"]
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy compiled binary from the builder stage
+COPY --from=builder /app/main .
+
+# Copy .env file if needed
+COPY .env .env
+
+# Set environment variable for the port
+ENV PORT=2001
+
+# Expose the service port
+EXPOSE ${PORT}
+
+# Run the application
+CMD ["/app/main"]
