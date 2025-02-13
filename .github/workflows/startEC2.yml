@@ -23,7 +23,7 @@ jobs:
           echo "${{ secrets.ec2_key }}" > private_key.pem
           chmod 600 private_key.pem
 
-      - name: Copy BusManagement to EC2
+      - name: Copy domain to EC2
         run: |
           scp -r -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.domain }} ubuntu@${{ secrets.ec2_host }}:/home/ubuntu/
 

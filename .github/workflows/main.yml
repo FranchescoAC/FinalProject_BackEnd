@@ -42,6 +42,23 @@ jobs:
         ec2_key: ${{ secrets.EC2_KEY_TICKET_MANAGEMENT }}
         domain: ${{ secrets.DOMAIN_TICKET }}
 
+  Deploy-Docker-Compose-Notification-Management:
+    uses: ./.github/workflows/login_pull_NotificationManagement.yml
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      repository_name_notification_create: ${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_CREATE }}
+      repository_name_notification_delete: ${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_DELETE }}
+      repository_name_notification_view: ${{ secrets.DOCKER_REPOSITORY_NAME_NOTIFICATION_VIEW }}
+
+  ssh-connect-ec2-Notification-Management:
+      needs: Deploy-Docker-Compose-Notification-Management
+      uses: ./.github/workflows/startEC2.yml
+      secrets:
+        ec2_host: ${{ secrets.EC2_HOST_NOTIFICATION_MANAGEMENT }}
+        ec2_key: ${{ secrets.EC2_KEY_NOTIFICATION_MANAGEMENT }}
+        domain: ${{ secrets.DOMAIN_NOTIFICATION }}
+
 
 
 
