@@ -9,9 +9,9 @@ namespace DeletePayment.controller
     [ApiController]
     public class ControllerPayment : ControllerBase
     {
-        private readonly Database _database;
+        private readonly MySqlDatabase _database; // ✅ Usar el nombre corregido de la clase
 
-        public ControllerPayment(Database database)
+        public ControllerPayment(MySqlDatabase database) // Inyección de dependencia
         {
             _database = database;
         }

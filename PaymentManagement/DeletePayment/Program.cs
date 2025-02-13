@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DeletePayment.config;
-using DeletePayment.routes;
+using Microsoft.EntityFrameworkCore; // Importa Entity Framework Core
+using DeletePayment.config; // Importa tu configuración
+using DeletePayment.routes; // Importa tus rutas
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,13 +16,19 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
         policy => policy.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
 
 // ✅ Agregar servicios al contenedor
 builder.Services.AddControllers();
-builder.Services.AddSingleton<Database>(); // Conexión a la base de datos
+
+// ✅ Inyección de dependencia para tu DbContext (reemplaza MySqlDatabase con el nombre real)
+builder.Services.AddDbContext<MySqlDatabase>(options => 
+    options.UseMySql(builder.Configuration.GetConnectionString("YourConnectionString"))); // Usa MySql
+
+// ✅ Inyección de dependencia para tu clase de base de datos (renombrada a MySqlDatabase)
+builder.Services.AddSingleton<MySqlDatabase>();
 
 var app = builder.Build();
 
@@ -33,8 +40,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseCors("AllowAllOrigins"); // ✅ Habilitar CORS para acceso externo
+app.UseAuthorization(); // Si usas autorización
+
 app.MapControllers();
-app.RegisterPaymentRoutes();
+
+// ✅ Llamar al método de extensión RegisterPaymentRoutes para registrar las rutas
+app.RegisterPaymentRoutes(); // Debe coincidir el nombre del método en routePayment.cs
 
 // ✅ Configurar la aplicación para escuchar en 0.0.0.0 y el puerto 7003
 app.Urls.Add($"http://0.0.0.0:{port}");

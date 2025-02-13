@@ -3,11 +3,11 @@ using System;
 
 namespace DeletePayment.config
 {
-    public class Database
+    public class MySqlDatabase // ✅ Renombrar la clase para evitar conflictos
     {
         private readonly string _connectionString;
 
-        public Database()
+        public MySqlDatabase()
         {
             // Obtener configuración desde variables de entorno
             var host = Environment.GetEnvironmentVariable("DB_HOST");
@@ -18,6 +18,9 @@ namespace DeletePayment.config
 
             // Construir la cadena de conexión
             _connectionString = $"Server={host};Port={port};Database={database};User={user};Password={password};";
+
+            // ✅ Imprimir la cadena de conexión para verificarla
+            Console.WriteLine($"Connection string: {_connectionString}");
         }
 
         public MySqlConnection GetConnection()
