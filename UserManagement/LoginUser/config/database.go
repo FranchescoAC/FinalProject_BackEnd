@@ -6,9 +6,18 @@ import (
 	"log"
 	"os"
 	"strconv"
-
+	
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq" // Importamos el driver de PostgreSQL
+
 )
+
+func init() {
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatalf("❌ Error al cargar el archivo .env: %v", err)
+    }
+}
 
 // Conectar a la base de datos PostgreSQL usando variables de entorno
 func ConnectDB() (*sql.DB, error) {

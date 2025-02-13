@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRoutes, getBuses } from "../services/ticketService";
+import { getRoutes, getBuses } from "../../services/ticketService";
 import { Container, Row, Col, Button, Card, Form, Alert, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
