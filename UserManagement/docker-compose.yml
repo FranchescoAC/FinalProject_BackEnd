@@ -13,6 +13,8 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_PORT=${DB_PORT}
+    ports:
+      - "2004:2004"
 
   list-user:
     build:
@@ -28,6 +30,8 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_PORT=${DB_PORT}
+    ports:
+      - "2002:2002"
 
   login-user:
     build:
@@ -43,6 +47,8 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_PORT=${DB_PORT}
+    ports:
+      - "2001:2001"
 
   register-user:
     build:
@@ -58,6 +64,8 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_PORT=${DB_PORT}
+    ports:
+      - "2000:2000"
 
   update-user:
     build:
@@ -73,6 +81,8 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_PORT=${DB_PORT}
+    ports:
+      - "2003:2003"
 
   postgres:
     image: postgres:latest

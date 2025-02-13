@@ -23,12 +23,11 @@ WORKDIR /app
 # Copy compiled binary from the builder stage
 COPY --from=builder /app/main .
 
-
 # Set environment variable for the port
 ENV PORT=2002
 
 # Expose the service port
-EXPOSE ${PORT}
+EXPOSE 2002
 
 # Run the application
 CMD ["/app/main"]
