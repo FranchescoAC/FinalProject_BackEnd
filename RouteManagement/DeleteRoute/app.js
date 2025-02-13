@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const connectDB = require("./config/database");
 const deleteRoutes = require("./routes/deleteRoutes");
@@ -15,7 +16,8 @@ connectDB();
 app.use("/api/routes", deleteRoutes);
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`DeleteRoute Service running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => { // Escuchar en 0.0.0.0
+  console.log(`ListRoute Service running on port ${PORT}`);
 });
+
 

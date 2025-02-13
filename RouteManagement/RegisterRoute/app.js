@@ -1,20 +1,23 @@
+require('dotenv').config(); // Carga las variables de entorno (¡primero!)
 const express = require("express");
-const connectDB = require("./config/database");
+const cors = require("cors");
+const connectDB = require("./config/database"); // Importa la conexión a la base de datos
 const registerRoute = require("./routes/registerRoute");
 
 const app = express();
 const PORT = process.env.PORT || 6001;
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 
-// Database Connection
+// Conexión a la base de datos (¡después del middleware!)
 connectDB();
 
-// Routes
+// Rutas
 app.use("/api/routes", registerRoute);
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`RegisterRoute Service running on port ${PORT}`);
+// Iniciar servidor (¡al final!)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`ListRoute Service running on port ${PORT}`);
 });
