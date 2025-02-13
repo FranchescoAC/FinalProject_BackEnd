@@ -10,6 +10,7 @@ on:
       domain:
         required: true
 
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -29,7 +30,7 @@ jobs:
       - name: SSH into EC2 and Deploy Application
         run: |
           ssh -T -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.ec2_host }} << EOF
-            # Verificar que Docker está instalado
+            # Verificar que Docker está corriendo
             if ! command -v docker &> /dev/null; then
               echo "Docker no está instalado. Instalando Docker..."
               sudo apt update && sudo apt install -y docker.io
@@ -39,7 +40,7 @@ jobs:
 
             # Verificar que Docker Compose está instalado
             if ! command -v docker-compose &> /dev/null; then
-              echo "Docker Compose no está instalado. Instalándolo..."
+              echo "Docker Compose no está instalado. Instalandolo..."
               sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose
             fi
@@ -47,31 +48,8 @@ jobs:
             # Moverse a la carpeta del proyecto
             cd /home/ubuntu/${{ secrets.domain }}/
 
-            # Verificar si hay archivos .go en el proyecto antes de instalar Go
-            if find . -name "*.go" | grep -q .; then
-              echo "Detectado código en Go. Instalando Go y dependencias..."
-              if ! command -v go &> /dev/null; then
-                sudo apt update && sudo apt install -y golang
-              fi
-
-              # Lista de microservicios en Go dentro de UserManagement
-              services=("DeleteUser" "ListUser" "LoginUser" "RegisterUser" "UpdateUser")
-
-              for service in "\${services[@]}"; do
-                if [ -d "UserManagement/\$service" ]; then
-                  echo "Instalando dependencias en \$service..."
-                  cd "UserManagement/\$service"
-                  go get github.com/golang-jwt/jwt/v4
-                  go mod tidy
-                  cd ../../
-                fi
-              done
-            else
-              echo "No se detectó código en Go. Saltando instalación de Go."
-            fi
-
             # Cargar variables de entorno
-            export \$(grep -v '^#' .env | xargs)
+            export $(grep -v '^#' .env | xargs)
 
             # Ejecutar Docker Compose
             sudo docker-compose down
@@ -80,3 +58,4 @@ jobs:
 
             echo "Despliegue completado."
           EOF
+

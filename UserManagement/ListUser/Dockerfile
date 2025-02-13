@@ -6,10 +6,15 @@ WORKDIR /app
 
 # Copy go.mod and go.sum to download dependencies
 COPY go.mod go.sum ./
-RUN go mod download
+
+# Download dependencies and tidy the module
+RUN go mod download && go mod tidy
 
 # Copy the entire project
 COPY . .
+
+# Install the specific Go package for JWT
+RUN go get github.com/golang-jwt/jwt/v4
 
 # Build the Go application in release mode
 RUN go build -o main .
@@ -27,7 +32,7 @@ COPY --from=builder /app/main .
 ENV PORT=2002
 
 # Expose the service port
-EXPOSE 2002
+EXPOSE ${PORT}
 
 # Run the application
 CMD ["/app/main"]
