@@ -1,5 +1,3 @@
-version: "3.8"  # Especifica la versión de Docker Compose (puedes ajustarla si es necesario)
-
 services:
   delete-route:
     build:
@@ -8,12 +6,9 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_ROUTE_DELETE}:latest"
     restart: always
     ports:
-      - "3001:3001"  # Puerto para el servicio delete-route (puedes cambiarlo)
-    depends_on:
-      - mongodb  # Dependencia del servicio de MongoDB
+      - "6004:6004"  # Puerto para el servicio delete-route (puedes cambiarlo)
     environment:
-      - MONGODB_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASE}
-      # Otras variables de entorno que necesites
+      - MONGO_URI=${MONGO_URI}
 
   list-route:
     build:
@@ -22,12 +17,9 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_ROUTE_LIST}:latest"
     restart: always
     ports:
-      - "3002:3002"  # Puerto para el servicio list-route (puedes cambiarlo)
-    depends_on:
-      - mongodb
+      - "6002:6002"  # Puerto para el servicio list-route (puedes cambiarlo)
     environment:
-      - MONGODB_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASE}
-      # Otras variables de entorno
+      - MONGO_URI=${MONGO_URI}
 
   register-route:
     build:
@@ -36,12 +28,9 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_ROUTE_REGISTER}:latest"
     restart: always
     ports:
-      - "3003:3003"  # Puerto para el servicio register-route (puedes cambiarlo)
-    depends_on:
-      - mongodb
+      - "6001:6001"  # Puerto para el servicio register-route (puedes cambiarlo)
     environment:
-      - MONGODB_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASE}
-      # Otras variables de entorno
+      - MONGO_URI=${MONGO_URI}
 
   update-route:
     build:
@@ -50,24 +39,7 @@ services:
     image: "${DOCKER_USERNAME}/${DOCKER_REPOSITORY_NAME_ROUTE_UPDATE}:latest"
     restart: always
     ports:
-      - "3004:3004"  # Puerto para el servicio update-route (puedes cambiarlo)
-    depends_on:
-      - mongodb
+      - "6003:6003"  # Puerto para el servicio update-route (puedes cambiarlo)
     environment:
-      - MONGODB_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASE}
-      # Otras variables de entorno
+      - MONGO_URI=${MONGO_URI}
 
-  mongodb:  # Servicio de MongoDB
-    image: mongo:latest  # o la versión que prefieras
-    restart: always
-    environment:
-      - MONGODB_USER=${MONGODB_USER}  # Usuario para la aplicación
-      - MONGODB_PASSWORD=${MONGODB_PASSWORD}  # Contraseña para la aplicación
-      - MONGODB_DATABASE=${MONGODB_DATABASE}  # Nombre de la base de datos
-    ports:
-      - "27017:27017"  # Publica el puerto solo si necesitas acceder desde tu máquina local (opcional)
-    volumes:
-      - mongodb_data:/data/db  # Persiste los datos de MongoDB
-
-volumes:
-  mongodb_data:  # Volumen para los datos de MongoDB

@@ -1,3 +1,4 @@
+require('dotenv').config(); 
 const express = require("express");
 const cors = require("cors"); // Importa el paquete cors
 const connectDB = require("./config/database");
@@ -17,6 +18,6 @@ connectDB();
 app.use("/api/routes", listRoutes);
 
 // Start Server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => { // Escuchar en 0.0.0.0
   console.log(`ListRoute Service running on port ${PORT}`);
 });
