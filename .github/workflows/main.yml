@@ -96,5 +96,23 @@ jobs:
         ec2_key: ${{ secrets.EC2_KEY_PAYMENT_MANAGEMENT }}
         domain: ${{ secrets.DOMAIN_PAYMENT }}
 
+  Deploy-Docker-Compose-Route-Management:
+    uses: ./.github/workflows/login_pull_RouteManagement.yml
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      repository_name_delete_route: ${{ secrets.DOCKER_REPOSITORY_NAME_ROUTE_DELETE }}
+      repository_name_list_route: ${{ secrets.DOCKER_REPOSITORY_NAME_ROUTE_LIST }}
+      repository_name_register_route: ${{ secrets.DOCKER_REPOSITORY_NAME_ROUTE_REGISTER }}
+      repository_name_update_route: ${{ secrets.DOCKER_REPOSITORY_NAME_ROUTE_UPDATE }}
+
+  ssh-connect-ec2-Route-Management:
+      needs: Deploy-Docker-Compose-Route-Management
+      uses: ./.github/workflows/startEC2.yml
+      secrets:
+        ec2_host: ${{ secrets.EC2_HOST_ROUTE_MANAGEMENT }}
+        ec2_key: ${{ secrets.EC2_KEY_ROUTE_MANAGEMENT }}
+        domain: ${{ secrets.DOMAIN_ROUTE }}
+
 
 
